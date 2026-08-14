@@ -1,0 +1,131 @@
+/* ============================================================
+   Smart Traffic Command Center — Responsive Styles
+   ============================================================ */
+
+/* ---- Large Desktop ---- */
+@media (max-width: 1400px) {
+  .kpi-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ---- Laptop / Tablet Landscape ---- */
+@media (max-width: 1200px) {
+  .dashboard-grid__item--wide,
+  .dashboard-grid__item--medium,
+  .dashboard-grid__item--half {
+    grid-column: span 12;
+  }
+
+  .kpi-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ---- Tablet Portrait ---- */
+@media (max-width: 992px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.is-open {
+    transform: translateX(0);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .sidebar-overlay {
+    display: block;
+    pointer-events: none;
+  }
+
+  .sidebar-overlay.is-visible {
+    pointer-events: auto;
+  }
+
+  .main-wrapper {
+    margin-left: 0;
+  }
+
+  .topbar__menu-btn {
+    display: flex;
+  }
+
+  .topbar {
+    padding: 0 var(--space-md);
+  }
+
+  .main-content {
+    padding: var(--space-lg);
+  }
+
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .topbar__user-info {
+    display: none;
+  }
+}
+
+/* ---- Mobile ---- */
+@media (max-width: 576px) {
+  .topbar__title {
+    font-size: var(--text-base);
+  }
+
+  .topbar__status span:not(.topbar__status-dot) {
+    display: none;
+  }
+
+  .topbar__status {
+    padding: var(--space-xs) var(--space-sm);
+  }
+
+  .main-content {
+    padding: var(--space-md);
+  }
+
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kpi-card__value {
+    font-size: var(--text-xl);
+  }
+
+  .page-header__title {
+    font-size: var(--text-xl);
+  }
+
+  .demo-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
+  .placeholder-panel {
+    min-height: 180px;
+    padding: var(--space-lg);
+  }
+
+  .placeholder-panel--tall {
+    min-height: 240px;
+  }
+
+  .page-placeholder {
+    padding: var(--space-xl) var(--space-md);
+    min-height: 320px;
+  }
+}
+
+/* ---- Reduced Motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

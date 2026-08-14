@@ -1,0 +1,257 @@
+/* ============================================================
+   PROJECT VECTOR — Animations
+   ============================================================ */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 8px var(--color-primary-glow);
+  }
+  50% {
+    box-shadow: 0 0 20px var(--color-primary-glow), 0 0 40px var(--color-primary-dim);
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes iconSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Layout animations */
+.sidebar {
+  animation: fadeInLeft 0.5s ease both;
+}
+
+.topbar {
+  animation: fadeInDown 0.4s ease both;
+}
+
+.main-content {
+  animation: fadeInUp 0.5s ease 0.1s both;
+}
+
+/* Brand logo glow */
+.sidebar__logo {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+/* Staggered KPI cards */
+.kpi-card {
+  animation: fadeInUp 0.5s ease both;
+}
+
+.kpi-card:nth-child(1) { animation-delay: 0.05s; }
+.kpi-card:nth-child(2) { animation-delay: 0.1s; }
+.kpi-card:nth-child(3) { animation-delay: 0.15s; }
+.kpi-card:nth-child(4) { animation-delay: 0.2s; }
+.kpi-card:nth-child(5) { animation-delay: 0.25s; }
+.kpi-card:nth-child(6) { animation-delay: 0.3s; }
+
+/* Dashboard grid cards */
+.dashboard-grid .card {
+  animation: fadeInUp 0.5s ease both;
+}
+
+.dashboard-grid .card:nth-child(1) { animation-delay: 0.15s; }
+.dashboard-grid .card:nth-child(2) { animation-delay: 0.2s; }
+.dashboard-grid .card:nth-child(3) { animation-delay: 0.25s; }
+.dashboard-grid .card:nth-child(4) { animation-delay: 0.3s; }
+.dashboard-grid .card:nth-child(5) { animation-delay: 0.35s; }
+.dashboard-grid .card:nth-child(6) { animation-delay: 0.4s; }
+
+/* Interactive hover animations */
+.kpi-card {
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-base),
+    transform var(--transition-base);
+}
+
+.kpi-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md), var(--shadow-glow);
+}
+
+.card {
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-base),
+    transform var(--transition-base);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.nav-link {
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    transform var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.nav-link:hover {
+  transform: translateX(4px);
+}
+
+.placeholder-panel__icon {
+  animation: float 4s ease-in-out infinite;
+}
+
+.page-placeholder {
+  animation: scaleIn 0.6s ease 0.2s both;
+}
+
+.demo-banner {
+  animation: fadeInUp 0.4s ease 0.05s both;
+}
+
+.page-header {
+  animation: fadeInUp 0.4s ease both;
+}
+
+/* Theme toggle */
+.topbar__theme-toggle .theme-icon {
+  transition: opacity var(--transition-base), transform var(--transition-base);
+}
+
+.topbar__theme-toggle:active .theme-icon {
+  animation: iconSpin 0.4s ease;
+}
+
+[data-theme="dark"] .theme-icon--sun,
+:root:not([data-theme="light"]) .theme-icon--sun {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.5);
+  position: absolute;
+}
+
+[data-theme="dark"] .theme-icon--moon,
+:root:not([data-theme="light"]) .theme-icon--moon {
+  opacity: 1;
+  transform: rotate(0) scale(1);
+}
+
+[data-theme="light"] .theme-icon--sun {
+  opacity: 1;
+  transform: rotate(0) scale(1);
+}
+
+[data-theme="light"] .theme-icon--moon {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.5);
+  position: absolute;
+}
+
+/* Shimmer on placeholder panels */
+.placeholder-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.placeholder-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-primary-dim) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 4s ease-in-out infinite;
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+/* Theme transition on color properties */
+body,
+.sidebar,
+.topbar,
+.card,
+.kpi-card,
+.nav-link,
+.demo-banner,
+.page-placeholder,
+.topbar__notifications,
+.topbar__theme-toggle,
+.topbar__user {
+  transition:
+    background-color var(--transition-theme),
+    border-color var(--transition-theme),
+    color var(--transition-theme),
+    box-shadow var(--transition-theme);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .kpi-card:hover,
+  .card:hover,
+  .nav-link:hover {
+    transform: none;
+  }
+}
