@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="PROJECT VECTOR — Intelligent Routing Engine">
+  <meta name="description" content="PROJECT VECTOR — Smart Routing Center">
   <title>Smart Routing | PROJECT VECTOR</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   <link rel="stylesheet" href="../css/variables.css">
   <script src="../js/theme.js"></script>
   <link rel="stylesheet" href="../css/global.css">
@@ -16,7 +17,7 @@
 <body>
   <div class="app-layout">
     <div class="sidebar-overlay" id="sidebar-overlay" aria-hidden="true"></div>
-<aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
       <div class="sidebar__brand">
         <a href="dashboard.html" class="sidebar__brand-link">
           <div class="sidebar__logo" aria-hidden="true">
@@ -137,9 +138,10 @@
       </nav>
 
       <div class="sidebar__footer">
-        <p class="sidebar__version">Phase 1 Â· v0.1.0</p>
+        <p class="sidebar__version">Phase 6 · v0.1.0</p>
       </div>
     </aside>
+
     <div class="main-wrapper">
       <header class="topbar" role="banner">
         <div class="topbar__left">
@@ -148,27 +150,15 @@
               <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
             </svg>
           </button>
-          <h1 class="topbar__title">Smart Routing</h1>
+          <h1 class="topbar__title">SMART ROUTING</h1>
         </div>
         <div class="topbar__right">
-          <div class="topbar__status" role="status" aria-label="System status: Demo Mode">
+          <div class="topbar__status" role="status" aria-label="System status: Simulated Routing Mode">
             <span class="topbar__status-dot" aria-hidden="true"></span>
-            <span>Demo Mode</span>
+            <span>SIMULATED ROUTING MODE</span>
           </div>
-                    <button class="topbar__theme-toggle" id="theme-toggle" aria-label="Switch to light theme" title="Switch to light theme">
-            <svg class="theme-icon theme-icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-            </svg>
-            <svg class="theme-icon theme-icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-            </svg>
-          </button>
-          <button class="topbar__notifications" id="notifications-btn" aria-label="Notifications (placeholder)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-            </svg>
-            <span class="topbar__notif-badge" aria-hidden="true"></span>
-          </button>
+          <button class="topbar__theme-toggle" id="theme-toggle" aria-label="Switch to light theme" title="Switch to light theme">...</button>
+          <button class="topbar__notifications" id="notifications-btn" aria-label="Notifications (placeholder)">...</button>
           <div class="topbar__user" aria-label="User profile">
             <div class="topbar__avatar" aria-hidden="true">OP</div>
             <div class="topbar__user-info">
@@ -178,39 +168,131 @@
           </div>
         </div>
       </header>
+
       <main class="main-content" id="main-content">
         <header class="page-header">
-          <h2 class="page-header__title">Intelligent Routing Engine</h2>
-          <p class="page-header__subtitle">AI-assisted route optimization to balance traffic load across planning authorities and reduce congestion on over-capacity roads.</p>
+          <h2 class="page-header__title">SMART ROUTING</h2>
+          <p class="page-header__subtitle">AI-ready traffic-aware route optimization</p>
         </header>
+
         <div class="demo-banner" role="note">
           <svg class="demo-banner__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
           </svg>
-          <p class="demo-banner__text"><strong>● DEMO MODE</strong> — This page is a frontend placeholder. No real traffic data or backend functionality is available in Phase 1.</p>
+          <p class="demo-banner__text"><strong>● SIMULATED ROUTING MODE</strong> — This routing engine uses the Phase 5 simulation network to recommend traffic-aware options. It does not provide guaranteed real-world navigation times.</p>
         </div>
-        <section class="page-placeholder" aria-labelledby="placeholder-title">
-          <svg class="page-placeholder__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
-          </svg>
-          <h3 id="placeholder-title" class="page-placeholder__title">Feature Coming Soon</h3>
-          <p class="page-placeholder__desc">Smart routing will be implemented in Phase 6.</p>
-          <div class="page-placeholder__features" aria-label="Planned features">
-              <span class="feature-tag">Dynamic rerouting</span>
-              <span class="feature-tag">Load balancing</span>
-              <span class="feature-tag">Multi-authority routes</span>
-              <span class="feature-tag">Capacity-aware paths</span>
+
+        <section class="routing-shell" aria-label="Smart routing dashboard">
+          <div class="routing-form card">
+            <div class="card__header">
+              <div class="card__title">
+                <svg class="card__title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M3 11.5V5.5A1.5 1.5 0 0 1 4.5 4h15A1.5 1.5 0 0 1 21 5.5v6"/><path d="M7 20h10"/><path d="M12 4v16"/>
+                </svg>
+                ROUTE INPUT
+              </div>
+            </div>
+
+            <div class="card__body routing-form__body">
+              <form id="routing-form" novalidate>
+                <div class="routing-form__grid">
+                  <label class="form-field">
+                    <span class="form-field__label">Origin</span>
+                    <select id="origin-select" aria-label="Origin"></select>
+                  </label>
+
+                  <button id="swap-route-btn" class="btn btn--ghost routing-swap" type="button" aria-label="Swap origin and destination">Swap Origin/Destination</button>
+
+                  <label class="form-field">
+                    <span class="form-field__label">Destination</span>
+                    <select id="destination-select" aria-label="Destination"></select>
+                  </label>
+                </div>
+
+                <div class="routing-form__actions">
+                  <button class="btn btn--primary" id="route-submit" type="submit">Find Best Route</button>
+                </div>
+              </form>
+            </div>
           </div>
-          <span class="badge badge--phase">Phase 6</span>
+
+          <div class="routing-summary-grid">
+            <article class="routing-summary card" id="routing-recommendation-panel">
+              <div class="card__header">
+                <div class="card__title">
+                  <svg class="card__title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22l-.75-12.07A4.001 4.001 0 0 1 12 2z"/>
+                  </svg>
+                  SMART ROUTING RECOMMENDATION
+                </div>
+              </div>
+              <div class="card__body" id="recommendation-panel-body"></div>
+            </article>
+
+            <article class="routing-summary card">
+              <div class="card__header">
+                <div class="card__title">
+                  <svg class="card__title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M3 12h18"/><path d="M12 3v18"/><circle cx="12" cy="12" r="9"/>
+                  </svg>
+                  ROUTE COMPARISON
+                </div>
+              </div>
+              <div class="card__body" id="route-comparison-panel"></div>
+            </article>
+          </div>
+
+          <div class="routing-main-grid">
+            <div class="routing-map-panel card">
+              <div class="card__header">
+                <div class="card__title">
+                  <svg class="card__title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M3 12h18"/><path d="M12 3v18"/><circle cx="12" cy="12" r="8"/>
+                  </svg>
+                  ROUTE MAP
+                </div>
+                <span class="card__badge" id="route-map-badge">Network Ready</span>
+              </div>
+              <div class="routing-map-container">
+                <div id="routing-map" aria-label="Smart routing map"></div>
+              </div>
+            </div>
+
+            <aside class="routing-side card">
+              <div class="card__header">
+                <div class="card__title">
+                  <svg class="card__title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M4 4h7v7H4z"/><path d="M13 4h7v7h-7z"/><path d="M4 13h7v7H4z"/><path d="M13 13h7v7h-7z"/>
+                  </svg>
+                  RECENT ROUTES
+                </div>
+              </div>
+              <div class="card__body" id="route-history-panel"></div>
+            </aside>
+          </div>
+
+          <div class="route-card-list" id="route-card-list" aria-live="polite"></div>
         </section>
       </main>
+
       <footer class="app-footer" role="contentinfo">
-        <p>PROJECT VECTOR &mdash; Phase 1 Frontend Prototype &mdash; All data is DEMO DATA</p>
+        <p>PROJECT VECTOR &mdash; Phase 6 Smart Routing Prototype &mdash; Simulated route engine only</p>
       </footer>
     </div>
   </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="../js/traffic/simulationConfig.js"></script>
+  <script src="../js/traffic/roadModel.js"></script>
+  <script src="../js/traffic/vehicleGenerator.js"></script>
+  <script src="../js/traffic/trafficFlow.js"></script>
+  <script src="../js/traffic/congestionModel.js"></script>
+  <script src="../js/traffic/speedModel.js"></script>
+  <script src="../js/traffic/intersectionModel.js"></script>
+  <script src="../js/traffic/simulationEngine.js"></script>
   <script src="../js/utils.js"></script>
   <script src="../js/navigation.js"></script>
   <script src="../js/app.js"></script>
+  <script src="../js/routing.js"></script>
 </body>
 </html>

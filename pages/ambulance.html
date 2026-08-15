@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="PROJECT VECTOR — Ambulance Priority Routing">
-  <title>Ambulance | PROJECT VECTOR</title>
+  <meta name="description" content="FLOWX — Smart Ambulance Finder">
+  <title>SMART AMBULANCE FINDER | FLOWX</title>
   <link rel="stylesheet" href="../css/variables.css">
   <script src="../js/theme.js"></script>
   <link rel="stylesheet" href="../css/global.css">
@@ -12,11 +12,43 @@
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/responsive.css">
   <link rel="stylesheet" href="../css/animations.css">
+  <style>
+    .ambulance-shell { display: grid; grid-template-columns: 1.35fr 0.95fr; gap: 1.25rem; margin-top: 1.25rem; }
+    .ambulance-form { display: grid; gap: 1rem; }
+    .ambulance-form__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+    .ambulance-result-list { display: grid; gap: 0.85rem; }
+    .ambulance-result-card { display: grid; grid-template-columns: auto 1fr auto; gap: 0.9rem; align-items: center; border: 1px solid rgba(148, 163, 184, 0.2); background: rgba(15, 23, 42, 0.25); border-radius: 14px; padding: 0.9rem 1rem; cursor: pointer; transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .ambulance-result-card:hover { border-color: rgba(14, 165, 233, 0.7); transform: translateY(-1px); }
+    .ambulance-result-card.is-selected { border-color: rgba(34, 197, 94, 0.9); box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.1); }
+    .ambulance-result-card__icon { width: 48px; height: 48px; display: grid; place-items: center; font-size: 1.5rem; border-radius: 12px; background: rgba(59, 130, 246, 0.12); }
+    .ambulance-result-card__meta { display: flex; gap: 0.45rem; flex-wrap: wrap; }
+    .ambulance-result-card__meta span { font-size: 0.72rem; background: rgba(148, 163, 184, 0.08); padding: 0.2rem 0.45rem; border-radius: 999px; }
+    .ambulance-result-card__score { font-weight: 700; color: #9fe4ff; }
+    .ambulance-detail-card { display: grid; gap: 1rem; }
+    .ambulance-detail-card__header { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; }
+    .ambulance-detail-card__body { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.85rem; }
+    .ambulance-detail-card__body div { border: 1px solid rgba(148, 163, 184, 0.14); border-radius: 12px; padding: 0.65rem 0.75rem; background: rgba(15, 23, 42, 0.18); }
+    .ambulance-detail-card__body span { display: block; color: rgba(255,255,255,0.68); font-size: 0.73rem; margin-bottom: 0.25rem; }
+    .ambulance-table { overflow-x: auto; }
+    .ambulance-table table { width: 100%; border-collapse: collapse; }
+    .ambulance-table th, .ambulance-table td { text-align: left; padding: 0.8rem 0.7rem; border-bottom: 1px solid rgba(148, 163, 184, 0.1); }
+    .ambulance-pill { display: inline-flex; align-items: center; border-radius: 999px; padding: 0.2rem 0.6rem; font-size: 0.68rem; }
+    .ambulance-pill--good { background: rgba(34,197,94,0.14); color: #7ae7a5; }
+    .ambulance-pill--warn { background: rgba(234,179,8,0.14); color: #f8db7f; }
+    .ambulance-pill--critical { background: rgba(244,63,94,0.14); color: #fca5a5; }
+    @media (max-width: 980px) {
+      .ambulance-shell { grid-template-columns: 1fr; }
+      .ambulance-form__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 560px) {
+      .ambulance-form__grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
   <div class="app-layout">
     <div class="sidebar-overlay" id="sidebar-overlay" aria-hidden="true"></div>
-<aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
       <div class="sidebar__brand">
         <a href="dashboard.html" class="sidebar__brand-link">
           <div class="sidebar__logo" aria-hidden="true">
@@ -137,27 +169,38 @@
       </nav>
 
       <div class="sidebar__footer">
-        <p class="sidebar__version">Phase 1 Â· v0.1.0</p>
+        <p class="sidebar__version">Phase 11 · v0.1.0</p>
       </div>
     </aside>
+
     <div class="main-wrapper">
       <header class="topbar" role="banner">
         <div class="topbar__left">
           <button class="topbar__menu-btn" id="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="sidebar">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <line x1="3" y1="12" x2="21" y2="12"/>
+              <line x1="3" y1="18" x2="21" y2="18"/>
             </svg>
           </button>
           <h1 class="topbar__title">Ambulance</h1>
         </div>
         <div class="topbar__right">
-          <div class="topbar__status" role="status" aria-label="System status: Demo Mode">
+          <div class="topbar__status" role="status" aria-label="System status: Simulated ambulance data">
             <span class="topbar__status-dot" aria-hidden="true"></span>
-            <span>Demo Mode</span>
+            <span>SIMULATED DATA</span>
           </div>
-                    <button class="topbar__theme-toggle" id="theme-toggle" aria-label="Switch to light theme" title="Switch to light theme">
+          <button class="topbar__theme-toggle" id="theme-toggle" aria-label="Switch to light theme" title="Switch to light theme">
             <svg class="theme-icon theme-icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+              <circle cx="12" cy="12" r="5"/>
+              <line x1="12" y1="1" x2="12" y2="3"/>
+              <line x1="12" y1="21" x2="12" y2="23"/>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+              <line x1="1" y1="12" x2="3" y2="12"/>
+              <line x1="21" y1="12" x2="23" y2="12"/>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
             </svg>
             <svg class="theme-icon theme-icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
@@ -165,7 +208,8 @@
           </button>
           <button class="topbar__notifications" id="notifications-btn" aria-label="Notifications (placeholder)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
             </svg>
             <span class="topbar__notif-badge" aria-hidden="true"></span>
           </button>
@@ -178,39 +222,153 @@
           </div>
         </div>
       </header>
+
       <main class="main-content" id="main-content">
         <header class="page-header">
-          <h2 class="page-header__title">Ambulance Priority Routing</h2>
-          <p class="page-header__subtitle">Priority routing and green-wave signal coordination for emergency medical vehicles across authority boundaries.</p>
+          <h2 class="page-header__title">SMART AMBULANCE FINDER</h2>
+          <p class="page-header__subtitle">Find the fastest, nearest and best-value simulated ambulance</p>
         </header>
+
         <div class="demo-banner" role="note">
           <svg class="demo-banner__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
           </svg>
-          <p class="demo-banner__text"><strong>● DEMO MODE</strong> — This page is a frontend placeholder. No real traffic data or backend functionality is available in Phase 1.</p>
+          <p class="demo-banner__text"><strong>● DEMO / SIMULATED AMBULANCE DATA</strong> — This module uses simulated ambulance and hospital data for demonstration. It does not provide real ambulance availability, booking, dispatch, pricing, medical services, or emergency response.</p>
         </div>
-        <section class="page-placeholder" aria-labelledby="placeholder-title">
-          <svg class="page-placeholder__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
-          </svg>
-          <h3 id="placeholder-title" class="page-placeholder__title">Feature Coming Soon</h3>
-          <p class="page-placeholder__desc">Ambulance priority routing will be implemented in Phase 9.</p>
-          <div class="page-placeholder__features" aria-label="Planned features">
-              <span class="feature-tag">Ambulance tracking</span>
-              <span class="feature-tag">Green-wave signals</span>
-              <span class="feature-tag">ETA optimization</span>
-              <span class="feature-tag">Hospital routing</span>
+
+        <section class="signal-summary-grid" aria-label="Ambulance summary metrics">
+          <article class="kpi-card kpi-card--red">
+            <div class="kpi-card__icon" aria-hidden="true">🚑</div>
+            <p class="kpi-card__label">Fastest ETA</p>
+            <p class="kpi-card__value" id="ambulance-fastest-eta">0.0 min</p>
+            <div class="kpi-card__meta"><span class="kpi-card__trend trend trend--up">Live</span><span class="kpi-card__demo">SIM</span></div>
+          </article>
+          <article class="kpi-card kpi-card--green">
+            <div class="kpi-card__icon" aria-hidden="true">📍</div>
+            <p class="kpi-card__label">Nearest Unit</p>
+            <p class="kpi-card__value" id="ambulance-nearest-dist">0.0 km</p>
+            <div class="kpi-card__meta"><span class="kpi-card__trend trend trend--up">Closest</span><span class="kpi-card__demo">SIM</span></div>
+          </article>
+          <article class="kpi-card kpi-card--blue">
+            <div class="kpi-card__icon" aria-hidden="true">₹</div>
+            <p class="kpi-card__label">Best Value</p>
+            <p class="kpi-card__value" id="ambulance-best-cost">₹0</p>
+            <div class="kpi-card__meta"><span class="kpi-card__trend trend trend--up">Low</span><span class="kpi-card__demo">SIM</span></div>
+          </article>
+          <article class="kpi-card kpi-card--purple">
+            <div class="kpi-card__icon" aria-hidden="true">✅</div>
+            <p class="kpi-card__label">Available Units</p>
+            <p class="kpi-card__value" id="ambulance-available-count">0</p>
+            <div class="kpi-card__meta"><span class="kpi-card__trend trend trend--up">Ready</span><span class="kpi-card__demo">SIM</span></div>
+          </article>
+        </section>
+
+        <section class="card" aria-label="Ambulance request form">
+          <div class="card__header">
+            <div class="card__title">
+              <svg class="card__title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12h18"/><path d="M15 6l6 6-6 6"/><path d="M9 18l-6-6 6-6"/>
+              </svg>
+              Simulated request
+            </div>
+            <span class="badge badge--phase">SIMULATED DATA</span>
           </div>
-          <span class="badge badge--phase">Phase 9</span>
+          <div class="card__body">
+            <form id="ambulance-form" class="ambulance-form" novalidate>
+              <div class="ambulance-form__grid">
+                <label class="form-field">
+                  <span class="form-field__label">Patient area</span>
+                  <select id="ambulance-patient-zone"></select>
+                </label>
+                <label class="form-field">
+                  <span class="form-field__label">Destination hospital</span>
+                  <select id="ambulance-hospital"></select>
+                </label>
+                <label class="form-field">
+                  <span class="form-field__label">Urgency</span>
+                  <select id="ambulance-urgency">
+                    <option value="Critical">Critical</option>
+                    <option value="Priority">Priority</option>
+                    <option value="Routine">Routine</option>
+                  </select>
+                </label>
+                <label class="form-field">
+                  <span class="form-field__label">Sort by</span>
+                  <select id="ambulance-sort">
+                    <option value="recommended">Recommended</option>
+                    <option value="fastest">Fastest</option>
+                    <option value="nearest">Nearest</option>
+                    <option value="cheapest">Cheapest</option>
+                  </select>
+                </label>
+              </div>
+              <div class="emergency-form__actions">
+                <button type="submit" class="button button--primary">Generate recommendations</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <section class="ambulance-shell" aria-label="Ambulance recommendations">
+          <div class="card">
+            <div class="card__header">
+              <div class="card__title">
+                <svg class="card__title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M6 18h12"/><path d="M8 18V8h8v10"/><path d="M9 8l1-4h4l1 4"/><circle cx="8" cy="18" r="2"/><circle cx="16" cy="18" r="2"/>
+                </svg>
+                Recommended ambulances
+              </div>
+            </div>
+            <div class="card__body">
+              <div id="ambulance-results" class="ambulance-result-list"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card__header">
+              <div class="card__title">
+                <svg class="card__title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M7 12h10"/><path d="M12 7v10"/><circle cx="12" cy="12" r="9"/>
+                </svg>
+                Selected recommendation
+              </div>
+            </div>
+            <div class="card__body">
+              <div id="ambulance-detail" class="ambulance-detail-card"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" aria-label="Ambulance comparison table">
+          <div class="card__header">
+            <div class="card__title">
+              <svg class="card__title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 5h14v14H5z"/><path d="M8 9h8"/><path d="M8 13h8"/><path d="M8 17h5"/>
+              </svg>
+              Fleet comparison
+            </div>
+          </div>
+          <div class="card__body ambulance-table">
+            <div id="ambulance-table"></div>
+          </div>
         </section>
       </main>
+
       <footer class="app-footer" role="contentinfo">
-        <p>PROJECT VECTOR &mdash; Phase 1 Frontend Prototype &mdash; All data is DEMO DATA</p>
+        <p>FLOWX TRAFFIC &mdash; Phase 11 Smart Ambulance Finder &mdash; DEMO / SIMULATED AMBULANCE DATA</p>
       </footer>
     </div>
   </div>
+
   <script src="../js/utils.js"></script>
   <script src="../js/navigation.js"></script>
+  <script src="../js/traffic/simulationConfig.js"></script>
+  <script src="../js/traffic/roadModel.js"></script>
+  <script src="../js/traffic/congestionModel.js"></script>
+  <script src="../js/traffic/speedModel.js"></script>
+  <script src="../js/traffic/simulationEngine.js"></script>
+  <script src="../js/weather/weatherEngine.js"></script>
   <script src="../js/app.js"></script>
+  <script src="../js/ambulance.js"></script>
 </body>
 </html>

@@ -1,0 +1,12 @@
+# Root project ignore rules
+node_modules/
+.env
+.env.*
+backend/.env
+backend/node_modules/
+backend/.env.*
+logs/
+*.log
+npm-debug.log*
+.DS_Store
+coverage/

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="PROJECT VECTOR — Traffic Analytics & Reporting">
-  <title>Analytics | PROJECT VECTOR</title>
+  <meta name="description" content="FLOWX — Traffic Intelligence Center">
+  <title>FLOWX TRAFFIC INTELLIGENCE CENTER</title>
   <link rel="stylesheet" href="../css/variables.css">
   <script src="../js/theme.js"></script>
   <link rel="stylesheet" href="../css/global.css">
@@ -12,11 +12,40 @@
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/responsive.css">
   <link rel="stylesheet" href="../css/animations.css">
+  <style>
+    .analytics-shell { display: grid; gap: 1.25rem; }
+    .analytics-kpi-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 1rem; }
+    .analytics-grid { display: grid; grid-template-columns: 1.4fr 0.8fr; gap: 1rem; }
+    .analytics-panel { display: grid; gap: 0.9rem; }
+    .analytics-trend { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); align-items: end; gap: 0.7rem; min-height: 220px; padding: 1rem; border-radius: 16px; border: 1px solid rgba(148,163,184,0.14); background: rgba(15,23,42,0.18); }
+    .analytics-trend__column { display: grid; place-items: center; gap: 0.5rem; }
+    .analytics-trend__stack { position: relative; width: 100%; height: 160px; display: flex; align-items: end; justify-content: center; gap: 0.22rem; }
+    .analytics-trend__utilization, .analytics-trend__speed { width: 42%; border-radius: 999px 999px 0 0; display: block; }
+    .analytics-trend__utilization { background: linear-gradient(180deg, rgba(14,165,233,0.9), rgba(37,99,235,0.7)); }
+    .analytics-trend__speed { background: linear-gradient(180deg, rgba(34,197,94,0.9), rgba(16,185,129,0.7)); }
+    .analytics-list-item, .analytics-warning-item, .analytics-table-row, .analytics-activity-item, .analytics-signal-metric { border: 1px solid rgba(148,163,184,0.12); border-radius: 12px; background: rgba(15,23,42,0.15); }
+    .analytics-list-item { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; padding: 0.8rem 0.9rem; }
+    .analytics-list-item__metrics { display: flex; gap: 0.55rem; flex-wrap: wrap; font-size: 0.72rem; color: rgba(255,255,255,0.8); }
+    .analytics-warning-item { padding: 0.8rem 0.9rem; }
+    .analytics-warning-item p { margin: 0.25rem 0 0; color: rgba(255,255,255,0.7); }
+    .analytics-authorities { display: grid; gap: 0.7rem; }
+    .analytics-table-row { display: grid; grid-template-columns: 1.5fr 0.8fr 1fr 0.8fr; gap: 0.5rem; padding: 0.72rem 0.8rem; font-size: 0.78rem; }
+    .analytics-signal-metrics { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 0.7rem; }
+    .analytics-signal-metric { display: grid; gap: 0.4rem; padding: 0.8rem; }
+    .analytics-activity-feed { display: grid; gap: 0.7rem; }
+    .analytics-activity-item { padding: 0.75rem 0.8rem; }
+    .analytics-activity-item span { display: block; color: #7dd3fc; font-size: 0.72rem; margin-bottom: 0.25rem; }
+    .analytics-activity-item p { margin: 0; color: rgba(255,255,255,0.8); }
+    .analytics-empty { color: rgba(255,255,255,0.6); }
+    @media (max-width: 1100px) { .analytics-kpi-grid { grid-template-columns: repeat(3, minmax(0,1fr)); } }
+    @media (max-width: 720px) { .analytics-grid { grid-template-columns: 1fr; } .analytics-kpi-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } .analytics-table-row { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+    @media (max-width: 520px) { .analytics-kpi-grid { grid-template-columns: 1fr; } }
+  </style>
 </head>
 <body>
   <div class="app-layout">
     <div class="sidebar-overlay" id="sidebar-overlay" aria-hidden="true"></div>
-<aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
       <div class="sidebar__brand">
         <a href="dashboard.html" class="sidebar__brand-link">
           <div class="sidebar__logo" aria-hidden="true">
@@ -37,178 +66,196 @@
       <nav class="sidebar__nav" aria-label="Primary">
         <p class="sidebar__nav-label">Operations</p>
         <ul>
-          <li>
-            <a href="dashboard.html" class="nav-link" data-page="dashboard">
-              <svg class="nav-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
-              </svg>
-              Dashboard
-            </a>
-          </li>
-          <li>
-            <a href="traffic.html" class="nav-link" data-page="traffic">
-              <svg class="nav-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M9 17H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-4"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/>
-              </svg>
-              Live Traffic
-            </a>
-          </li>
-          <li>
-            <a href="routing.html" class="nav-link" data-page="routing">
-              <svg class="nav-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/>
-              </svg>
-              Smart Routing
-            </a>
-          </li>
-          <li>
-            <a href="signals.html" class="nav-link" data-page="signals">
-              <svg class="nav-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <rect x="7" y="2" width="10" height="20" rx="2"/><circle cx="12" cy="7" r="2" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none" opacity="0.5"/><circle cx="12" cy="17" r="2" fill="currentColor" stroke="none" opacity="0.3"/>
-              </svg>
-              Signal Control
-            </a>
-          </li>
+          <li><a href="dashboard.html" class="nav-link" data-page="dashboard">Dashboard</a></li>
+          <li><a href="traffic.html" class="nav-link" data-page="traffic">Live Traffic</a></li>
+          <li><a href="routing.html" class="nav-link" data-page="routing">Smart Routing</a></li>
+          <li><a href="signals.html" class="nav-link" data-page="signals">Signal Control</a></li>
         </ul>
-
         <p class="sidebar__nav-label">Coordination</p>
         <ul>
-          <li>
-            <a href="emergency.html" class="nav-link" data-page="emergency">
-              <svg class="nav-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
-              </svg>
-              Emergency
-            </a>
-          </li>
-          <li>
-            <a href="weather.html" class="nav-link" data-page="weather">
-              <svg class="nav-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/>
-              </svg>
-              Weather
-            </a>
-          </li>
-          <li>
-            <a href="ambulance.html" class="nav-link" data-page="ambulance">
-              <svg class="nav-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <rect x="1" y="6" width="16" height="12" rx="2"/><path d="M17 10h4l3 3v5h-7V10z"/><circle cx="6" cy="18" r="2"/><circle cx="20" cy="18" r="2"/><line x1="9" y1="12" x2="9" y2="12.01"/><line x1="12" y1="9" x2="12" y2="15"/><line x1="15" y1="12" x2="15" y2="12.01"/>
-              </svg>
-              Ambulance
-            </a>
-          </li>
-          <li>
-            <a href="authorities.html" class="nav-link" data-page="authorities">
-              <svg class="nav-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v0"/><path d="M9 12v0"/><path d="M9 15v0"/><path d="M9 18v0"/>
-              </svg>
-              Authorities
-            </a>
-          </li>
+          <li><a href="emergency.html" class="nav-link" data-page="emergency">Emergency</a></li>
+          <li><a href="weather.html" class="nav-link" data-page="weather">Weather</a></li>
+          <li><a href="ambulance.html" class="nav-link" data-page="ambulance">Ambulance</a></li>
+          <li><a href="authorities.html" class="nav-link" data-page="authorities">Authorities</a></li>
         </ul>
-
         <p class="sidebar__nav-label">Intelligence</p>
         <ul>
-          <li>
-            <a href="analytics.html" class="nav-link" data-page="analytics">
-              <svg class="nav-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
-              </svg>
-              Analytics
-            </a>
-          </li>
-          <li>
-            <a href="alerts.html" class="nav-link" data-page="alerts">
-              <svg class="nav-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-              </svg>
-              Alerts
-            </a>
-          </li>
-          <li>
-            <a href="settings.html" class="nav-link" data-page="settings">
-              <svg class="nav-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-              </svg>
-              Settings
-            </a>
-          </li>
+          <li><a href="analytics.html" class="nav-link" data-page="analytics">Analytics</a></li>
+          <li><a href="alerts.html" class="nav-link" data-page="alerts">Alerts</a></li>
+          <li><a href="settings.html" class="nav-link" data-page="settings">Settings</a></li>
         </ul>
       </nav>
-
-      <div class="sidebar__footer">
-        <p class="sidebar__version">Phase 1 Â· v0.1.0</p>
-      </div>
+      <div class="sidebar__footer"><p class="sidebar__version">Phase 13 · v0.1.0</p></div>
     </aside>
+
     <div class="main-wrapper">
       <header class="topbar" role="banner">
         <div class="topbar__left">
-          <button class="topbar__menu-btn" id="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="sidebar">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
-            </svg>
-          </button>
-          <h1 class="topbar__title">Analytics</h1>
+          <button class="topbar__menu-btn" id="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="sidebar">☰</button>
+          <h1 class="topbar__title">FLOWX TRAFFIC INTELLIGENCE CENTER</h1>
         </div>
         <div class="topbar__right">
-          <div class="topbar__status" role="status" aria-label="System status: Demo Mode">
+          <div class="topbar__status" role="status" aria-label="Simulation only">
             <span class="topbar__status-dot" aria-hidden="true"></span>
-            <span>Demo Mode</span>
+            <span>SIMULATION MODE</span>
           </div>
-                    <button class="topbar__theme-toggle" id="theme-toggle" aria-label="Switch to light theme" title="Switch to light theme">
-            <svg class="theme-icon theme-icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-            </svg>
-            <svg class="theme-icon theme-icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-            </svg>
-          </button>
-          <button class="topbar__notifications" id="notifications-btn" aria-label="Notifications (placeholder)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-            </svg>
-            <span class="topbar__notif-badge" aria-hidden="true"></span>
-          </button>
+          <button class="topbar__theme-toggle" id="theme-toggle" aria-label="Switch theme">☼</button>
           <div class="topbar__user" aria-label="User profile">
             <div class="topbar__avatar" aria-hidden="true">OP</div>
-            <div class="topbar__user-info">
-              <span class="topbar__user-name">Operator</span>
-              <span class="topbar__user-role">Traffic Control</span>
-            </div>
+            <div class="topbar__user-info"><span class="topbar__user-name">Operator</span><span class="topbar__user-role">Traffic Control</span></div>
           </div>
         </div>
       </header>
-      <main class="main-content" id="main-content">
+
+      <main class="main-content">
         <header class="page-header">
-          <h2 class="page-header__title">Traffic Analytics & Reporting</h2>
-          <p class="page-header__subtitle">Comprehensive analytics, historical trends, and reporting for traffic patterns across all managed jurisdictions.</p>
+          <h2 class="page-header__title">FLOWX TRAFFIC INTELLIGENCE CENTER</h2>
+          <p class="page-header__subtitle">Real-time network analytics and decision support using the active simulation state</p>
         </header>
+
         <div class="demo-banner" role="note">
           <svg class="demo-banner__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
           </svg>
-          <p class="demo-banner__text"><strong>● DEMO MODE</strong> — This page is a frontend placeholder. No real traffic data or backend functionality is available in Phase 1.</p>
+          <p class="demo-banner__text"><strong>● SIMULATION MODE</strong> — This dashboard derives KPIs, bottlenecks, and recommendations from the application’s simulated traffic state and does not claim real-world sensor accuracy.</p>
         </div>
-        <section class="page-placeholder" aria-labelledby="placeholder-title">
-          <svg class="page-placeholder__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
-          </svg>
-          <h3 id="placeholder-title" class="page-placeholder__title">Feature Coming Soon</h3>
-          <p class="page-placeholder__desc">Traffic analytics and reporting will be implemented in Phase 11.</p>
-          <div class="page-placeholder__features" aria-label="Planned features">
-              <span class="feature-tag">Historical trends</span>
-              <span class="feature-tag">Authority reports</span>
-              <span class="feature-tag">Capacity analysis</span>
-              <span class="feature-tag">Export & dashboards</span>
+
+        <section class="analytics-shell" aria-label="Traffic command center overview">
+          <div id="analytics-kpi-grid" class="analytics-kpi-grid"></div>
+
+          <div class="analytics-grid">
+            <div class="card analytics-panel">
+              <div class="card__header">
+                <h3 class="card__title">Network trend</h3>
+                <div style="display:flex;gap:0.6rem;align-items:center;">
+                  <span class="card__badge" id="analytics-live-ts">Updated now</span>
+                  <select id="analytics-range-select" aria-label="Time range" class="card__select">
+                    <option value="session">Session</option>
+                    <option value="15m">Last 15</option>
+                    <option value="30m">Last 30</option>
+                    <option value="1h">Last 60</option>
+                  </select>
+                </div>
+              </div>
+              <div class="card__body">
+                <div id="analytics-trend-chart" class="analytics-trend"></div>
+                <div id="analytics-predictions" style="margin-top:0.8rem"></div>
+              </div>
+            </div>
+
+            <div class="card analytics-panel">
+              <div class="card__header">
+                <h3 class="card__title">Decision support</h3>
+                <span class="card__badge">Action</span>
+              </div>
+              <div class="card__body">
+                <div id="analytics-decision-support"></div>
+              </div>
+            </div>
           </div>
-          <span class="badge badge--phase">Phase 11</span>
+
+          <div class="analytics-grid">
+            <div class="card analytics-panel">
+              <div class="card__header">
+                <h3 class="card__title">Bottleneck ranking</h3>
+                <span class="card__badge">Live</span>
+              </div>
+              <div class="card__body">
+                <div id="analytics-bottlenecks" class="analytics-authorities"></div>
+              </div>
+            </div>
+
+            <div class="card analytics-panel">
+              <div class="card__header">
+                <h3 class="card__title">Root-cause summary</h3>
+                <span class="card__badge">Insights</span>
+              </div>
+              <div class="card__body">
+                <div id="analytics-root-causes" class="analytics-authorities"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="analytics-grid">
+            <div class="card analytics-panel">
+              <div class="card__header">
+                <h3 class="card__title">Authority analytics</h3>
+                <span class="card__badge">Cross-jurisdiction</span>
+              </div>
+              <div class="card__body">
+                <div id="analytics-authorities" class="analytics-authorities"></div>
+              </div>
+            </div>
+
+            <div class="card analytics-panel">
+              <div class="card__header">
+                <h3 class="card__title">Signal performance</h3>
+                <span class="card__badge">Control</span>
+              </div>
+              <div class="card__body">
+                <div id="analytics-signal-metrics" class="analytics-signal-metrics"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="analytics-grid">
+            <div class="card analytics-panel">
+              <div class="card__header">
+                <h3 class="card__title">Live activity feed</h3>
+                <span class="card__badge">Events</span>
+              </div>
+              <div class="card__body">
+                <div id="analytics-activity-feed" class="analytics-activity-feed"></div>
+              </div>
+            </div>
+
+            <div class="card analytics-panel">
+              <div class="card__header">
+                <h3 class="card__title">Operations actions</h3>
+                <span class="card__badge">Export</span>
+              </div>
+              <div class="card__body">
+                <div style="display:flex;gap:0.6rem;flex-wrap:wrap">
+                  <button class="button button--primary" id="analytics-export-btn" type="button">EXPORT CSV</button>
+                  <button class="button" id="analytics-optimize-signals" type="button">Optimize Signals</button>
+                  <button class="button" id="analytics-apply-weather" type="button">Apply Heavy Rain</button>
+                  <button class="button" id="analytics-run-whatif" type="button">Run What‑If (3 ticks)</button>
+                </div>
+                <div class="card__body-text">This export contains the current simulated road state for operator review and straightforward comparison.</div>
+              </div>
+            </div>
+          </div>
         </section>
       </main>
+
       <footer class="app-footer" role="contentinfo">
-        <p>PROJECT VECTOR &mdash; Phase 1 Frontend Prototype &mdash; All data is DEMO DATA</p>
+        <p>FLOWX TRAFFIC — Phase 13 Advanced Analytics + Command Center — SIMULATION MODE</p>
       </footer>
     </div>
   </div>
+
+  <script src="../js/traffic/simulationConfig.js"></script>
+  <script src="../js/traffic/roadModel.js"></script>
+  <script src="../js/traffic/vehicleGenerator.js"></script>
+  <script src="../js/traffic/trafficFlow.js"></script>
+  <script src="../js/traffic/congestionModel.js"></script>
+  <script src="../js/traffic/speedModel.js"></script>
+  <script src="../js/traffic/intersectionModel.js"></script>
+  <script src="../js/traffic/simulationEngine.js"></script>
+  <script src="../js/weather/weatherEngine.js"></script>
+  <script src="../js/signal/signalConfig.js"></script>
+  <script src="../js/signal/signalModel.js"></script>
+  <script src="../js/signal/signalEngine.js"></script>
+  <script src="../js/authorities.js"></script>
+  <script src="../js/prediction/predictionConfig.js"></script>
+  <script src="../js/prediction/predictionHistory.js"></script>
+  <script src="../js/prediction/featureEngineering.js"></script>
+  <script src="../js/prediction/forecastingModel.js"></script>
+  <script src="../js/prediction/congestionRisk.js"></script>
+  <script src="../js/prediction/predictionExplanation.js"></script>
+  <script src="../js/prediction/predictionEngine.js"></script>
+  <script src="../js/emergency.js"></script>
+  <script src="../js/analytics.js"></script>
   <script src="../js/utils.js"></script>
   <script src="../js/navigation.js"></script>
   <script src="../js/app.js"></script>

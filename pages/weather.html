@@ -180,37 +180,114 @@
       </header>
       <main class="main-content" id="main-content">
         <header class="page-header">
-          <h2 class="page-header__title">Weather Impact Analysis</h2>
-          <p class="page-header__subtitle">Integrate weather data to predict and respond to traffic impacts caused by adverse weather conditions.</p>
+          <h2 class="page-header__title">Weather-Aware Traffic Intelligence</h2>
+          <p class="page-header__subtitle">SIMULATED WEATHER MODE — a front-end weather impact model that adjusts traffic, routing, prediction, and signal decisions without using live APIs.</p>
         </header>
+
         <div class="demo-banner" role="note">
           <svg class="demo-banner__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
           </svg>
-          <p class="demo-banner__text"><strong>● DEMO MODE</strong> — This page is a frontend placeholder. No real traffic data or backend functionality is available in Phase 1.</p>
+          <p class="demo-banner__text"><strong>● SIMULATED WEATHER MODE</strong> — This prototype does not use paid APIs or live weather feeds. It models weather effects for demonstration only.</p>
         </div>
-        <section class="page-placeholder" aria-labelledby="placeholder-title">
-          <svg class="page-placeholder__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
-          </svg>
-          <h3 id="placeholder-title" class="page-placeholder__title">Feature Coming Soon</h3>
-          <p class="page-placeholder__desc">Weather integration will be implemented in Phase 8.</p>
-          <div class="page-placeholder__features" aria-label="Planned features">
-              <span class="feature-tag">Weather API integration</span>
-              <span class="feature-tag">Impact forecasting</span>
-              <span class="feature-tag">Road condition alerts</span>
-              <span class="feature-tag">Historical correlation</span>
+
+        <section class="weather-shell" aria-label="Weather intelligence dashboard">
+          <div class="weather-grid">
+            <div class="weather-panel card">
+              <div class="weather-panel__header">
+                <div class="weather-panel__title">Current scenario</div>
+                <span class="weather-panel__status" data-weather="impact">Low impact</span>
+              </div>
+              <div class="weather-panel__body">
+                <div>
+                  <div class="weather-panel__temp" data-weather="temperature">27°C</div>
+                  <div class="weather-panel__meta">
+                    <span data-weather="label">Light Rain</span>
+                    <span data-weather="visibility">82% visibility</span>
+                  </div>
+                </div>
+                <div class="weather-panel__icon" data-weather="icon" aria-label="Weather icon">🌦️</div>
+              </div>
+              <div class="weather-summary__content">
+                <span class="weather-tag">SIMULATION ONLY</span>
+                <div class="weather-summary__desc" data-weather="summary">Intermittent rain slightly reduces driver comfort and roadway capacity.</div>
+              </div>
+            </div>
+
+            <aside class="weather-scenarios">
+              <div class="weather-scenarios__title">
+                <span>Scenario</span>
+                <button class="button button--ghost" type="button" data-weather-action="reset">Reset</button>
+              </div>
+              <div class="weather-scenario-list">
+                <button class="weather-scenario is-active" type="button" data-weather-scenario="clear">
+                  <span class="weather-scenario__info"><span aria-hidden="true">☀️</span> Clear</span>
+                  <span class="weather-scenario__meta">8</span>
+                </button>
+                <button class="weather-scenario" type="button" data-weather-scenario="light-rain">
+                  <span class="weather-scenario__info"><span aria-hidden="true">🌦️</span> Light Rain</span>
+                  <span class="weather-scenario__meta">32</span>
+                </button>
+                <button class="weather-scenario" type="button" data-weather-scenario="heavy-rain">
+                  <span class="weather-scenario__info"><span aria-hidden="true">🌧️</span> Heavy Rain</span>
+                  <span class="weather-scenario__meta">54</span>
+                </button>
+                <button class="weather-scenario" type="button" data-weather-scenario="fog">
+                  <span class="weather-scenario__info"><span aria-hidden="true">🌫️</span> Fog</span>
+                  <span class="weather-scenario__meta">61</span>
+                </button>
+                <button class="weather-scenario" type="button" data-weather-scenario="storm">
+                  <span class="weather-scenario__info"><span aria-hidden="true">⛈️</span> Storm</span>
+                  <span class="weather-scenario__meta">82</span>
+                </button>
+              </div>
+            </aside>
           </div>
-          <span class="badge badge--phase">Phase 8</span>
+
+          <div class="weather-metrics">
+            <div class="weather-metric">
+              <span class="weather-metric__label">Network impact</span>
+              <span class="weather-metric__value" data-weather="network-impact">32</span>
+            </div>
+            <div class="weather-metric">
+              <span class="weather-metric__label">Hotspots</span>
+              <span class="weather-metric__value" data-weather="hotspots">2</span>
+            </div>
+            <div class="weather-metric">
+              <span class="weather-metric__label">Average speed</span>
+              <span class="weather-metric__value" data-weather="avg-speed">35 km/h</span>
+            </div>
+            <div class="weather-metric">
+              <span class="weather-metric__label">Queue pressure</span>
+              <span class="weather-metric__value" data-weather="queue-pressure">Moderate</span>
+            </div>
+          </div>
+
+          <div class="weather-history">
+            <div class="weather-history__title">
+              <span>History</span>
+              <span>Last 8</span>
+            </div>
+            <div class="weather-history__items" data-weather="history">
+              <div class="weather-history__item"><span>Clear</span><strong>8</strong></div>
+            </div>
+          </div>
         </section>
       </main>
       <footer class="app-footer" role="contentinfo">
-        <p>PROJECT VECTOR &mdash; Phase 1 Frontend Prototype &mdash; All data is DEMO DATA</p>
+        <p>FLOWX TRAFFIC &mdash; Phase 10 Weather Intelligence &mdash; SIMULATED WEATHER MODE</p>
       </footer>
     </div>
   </div>
   <script src="../js/utils.js"></script>
   <script src="../js/navigation.js"></script>
+  <script src="../js/traffic/simulationConfig.js"></script>
+  <script src="../js/traffic/roadModel.js"></script>
+  <script src="../js/traffic/congestionModel.js"></script>
+  <script src="../js/traffic/speedModel.js"></script>
+  <script src="../js/traffic/simulationEngine.js"></script>
+  <script src="../js/weather/weatherEngine.js"></script>
+  <script src="../js/weather/weatherView.js"></script>
   <script src="../js/app.js"></script>
 </body>
 </html>

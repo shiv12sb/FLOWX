@@ -9,6 +9,26 @@ const STCApp = {
     STCNavigation.init();
     this.initNotifications();
     this.initDemoNotice();
+
+    if (window.location.pathname.endsWith('dashboard.html')) {
+      STCAuth.guardDashboard();
+    }
+
+    if (window.location.pathname.endsWith('weather.html') && window.FlowXWeatherView) {
+      window.FlowXWeatherView.initWeatherPage();
+    }
+
+    if (window.location.pathname.endsWith('ambulance.html') && window.FlowXAmbulance) {
+      window.FlowXAmbulance.init();
+    }
+
+    if (window.location.pathname.endsWith('authorities.html') && window.FlowXAuthorityCoordination) {
+      window.FlowXAuthorityCoordination.init();
+    }
+
+    if (window.location.pathname.endsWith('analytics.html') && window.FlowXAnalytics) {
+      window.FlowXAnalytics.init();
+    }
   },
 
   initNotifications() {

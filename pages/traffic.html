@@ -7,6 +7,7 @@
   <title>Live Traffic | PROJECT VECTOR</title>
   <link rel="stylesheet" href="../css/variables.css">
   <script src="../js/theme.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   <link rel="stylesheet" href="../css/global.css">
   <link rel="stylesheet" href="../css/layout.css">
   <link rel="stylesheet" href="../css/components.css">
@@ -181,27 +182,157 @@
       <main class="main-content" id="main-content">
         <header class="page-header">
           <h2 class="page-header__title">Live Traffic Monitoring</h2>
-          <p class="page-header__subtitle">Real-time traffic monitoring, road congestion visualization, and live vehicle flow tracking across all planning authority jurisdictions.</p>
+          <p class="page-header__subtitle">Urban road network health, corridor congestion, and signal coordination insights across the city command layer.</p>
         </header>
+
         <div class="demo-banner" role="note">
           <svg class="demo-banner__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
           </svg>
-          <p class="demo-banner__text"><strong>● DEMO MODE</strong> — This page is a frontend placeholder. No real traffic data or backend functionality is available in Phase 1.</p>
+          <p class="demo-banner__text"><strong>● DEMO MODE</strong> — This map uses simulated road-level traffic data for prototype visualization only.</p>
         </div>
-        <section class="page-placeholder" aria-labelledby="placeholder-title">
-          <svg class="page-placeholder__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
-          </svg>
-          <h3 id="placeholder-title" class="page-placeholder__title">Feature Coming Soon</h3>
-          <p class="page-placeholder__desc">Live traffic monitoring will be implemented in Phase 4.</p>
-          <div class="page-placeholder__features" aria-label="Planned features">
-              <span class="feature-tag">Live road status</span>
-              <span class="feature-tag">Congestion heatmaps</span>
-              <span class="feature-tag">Vehicle flow tracking</span>
-              <span class="feature-tag">Authority boundaries</span>
+
+        <section class="traffic-shell" aria-label="Traffic monitoring dashboard">
+          <div class="traffic-summary" id="traffic-summary"></div>
+
+          <div class="traffic-controls-grid">
+            <div class="traffic-control-panel card">
+              <div class="card__header">
+                <div class="card__title">
+                  <svg class="card__title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+                  </svg>
+                  SIMULATION CONTROL
+                </div>
+              </div>
+              <div class="card__body traffic-control-panel__body">
+                <div class="traffic-control-panel__row">
+                  <span class="traffic-control-panel__label">Status</span>
+                  <strong id="sim-status">RUNNING</strong>
+                </div>
+                <div class="traffic-control-panel__row">
+                  <span class="traffic-control-panel__label">Simulation Time</span>
+                  <strong id="sim-time">08:00</strong>
+                </div>
+                <div class="traffic-control-panel__row">
+                  <span class="traffic-control-panel__label">Simulation Speed</span>
+                  <strong id="sim-speed">1x</strong>
+                </div>
+                <div class="traffic-control-panel__row">
+                  <span class="traffic-control-panel__label">Total Vehicles</span>
+                  <strong id="sim-vehicles">0</strong>
+                </div>
+                <div class="traffic-control-panel__row">
+                  <span class="traffic-control-panel__label">Congested Roads</span>
+                  <strong id="sim-congested">0</strong>
+                </div>
+                <div class="traffic-control-panel__row">
+                  <span class="traffic-control-panel__label">Network Utilization</span>
+                  <strong id="sim-utilization">0%</strong>
+                </div>
+                <div class="traffic-control-actions">
+                  <button class="btn btn--primary sim-btn" data-action="start" type="button">Start</button>
+                  <button class="btn btn--ghost sim-btn" data-action="pause" type="button">Pause</button>
+                  <button class="btn btn--ghost sim-btn" data-action="reset" type="button">Reset</button>
+                </div>
+                <div class="traffic-speed-picker">
+                  <span class="traffic-speed-picker__label">Speed</span>
+                  <div class="traffic-speed-options">
+                    <button class="speed-btn is-active" data-speed="1" type="button">1x</button>
+                    <button class="speed-btn" data-speed="2" type="button">2x</button>
+                    <button class="speed-btn" data-speed="5" type="button">5x</button>
+                    <button class="speed-btn" data-speed="10" type="button">10x</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="traffic-control-panel card">
+              <div class="card__header">
+                <div class="card__title">
+                  <svg class="card__title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14.5a3.5 3.5 0 0 1 0 7H6"/>
+                  </svg>
+                  TRAFFIC INCIDENTS
+                </div>
+              </div>
+              <div class="card__body traffic-incident-panel">
+                <button class="btn btn--ghost incident-btn" data-incident="accident" type="button">Add Accident</button>
+                <button class="btn btn--ghost incident-btn" data-incident="laneClosure" type="button">Add Lane Closure</button>
+                <button class="btn btn--ghost incident-btn" data-incident="roadWork" type="button">Add Road Work</button>
+                <button class="btn btn--ghost incident-btn incident-btn--danger" data-incident="clear" type="button">Clear Incidents</button>
+                <p class="traffic-incident-note">SIMULATION ONLY · Incident applies to the selected road.</p>
+              </div>
+            </div>
           </div>
-          <span class="badge badge--phase">Phase 4</span>
+
+          <div class="traffic-toolbar card">
+            <div class="traffic-toolbar__filters" aria-label="Traffic filters">
+              <button class="traffic-filter is-active" data-filter="all" type="button">All Roads</button>
+              <button class="traffic-filter" data-filter="heavy" type="button">Severe</button>
+              <button class="traffic-filter" data-filter="moderate" type="button">Moderate</button>
+              <button class="traffic-filter" data-filter="clear" type="button">Smooth</button>
+              <button class="traffic-filter" data-filter="incident" type="button">Incidents</button>
+            </div>
+
+            <div class="traffic-toolbar__actions">
+              <label class="traffic-search" aria-label="Search roads by name">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="11" cy="11" r="7"/><path d="M20 20L16.65 16.65"/>
+                </svg>
+                <input id="traffic-search" type="search" placeholder="Search roads..." aria-label="Search roads">
+              </label>
+              <button class="btn btn--ghost traffic-toggle" id="density-view-toggle" type="button">DENSITY VIEW</button>
+              <button class="btn btn--ghost traffic-toggle" id="traffic-toggle" type="button">Pause Simulation</button>
+            </div>
+          </div>
+
+          <div class="traffic-layout">
+            <div class="traffic-map-panel card">
+              <div class="card__header">
+                <div class="card__title">
+                  <svg class="card__title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M3 12h18"/><path d="M12 3v18"/><circle cx="12" cy="12" r="8"/>
+                  </svg>
+                  City Road Network
+                </div>
+                <span class="card__badge" id="map-status-badge">Simulation Live</span>
+              </div>
+              <div class="traffic-map-container">
+                <div id="traffic-map" aria-label="Traffic map"></div>
+                <div class="traffic-legend" aria-label="Traffic legend">
+                  <span><i class="traffic-legend__dot traffic-legend__dot--clear"></i> Smooth</span>
+                  <span><i class="traffic-legend__dot traffic-legend__dot--moderate"></i> Moderate</span>
+                  <span><i class="traffic-legend__dot traffic-legend__dot--heavy"></i> Severe</span>
+                </div>
+              </div>
+            </div>
+
+            <aside class="traffic-sidebar card" aria-label="Selected corridor details">
+              <div class="card__header">
+                <div class="card__title">
+                  <svg class="card__title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M4 19V5l7-3 9 3v14l-9 3-7-3z"/><path d="M11 2v17"/><path d="M4 7l7 3 9-3"/>
+                  </svg>
+                  Corridor Detail
+                </div>
+              </div>
+              <div class="traffic-sidebar__body" id="traffic-detail-panel"></div>
+            </aside>
+          </div>
+
+          <div class="traffic-road-list card">
+            <div class="card__header">
+              <div class="card__title">
+                <svg class="card__title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M3 12h18"/><path d="M12 3v18"/><circle cx="12" cy="12" r="9"/>
+                </svg>
+                Active Corridors
+              </div>
+              <span class="card__badge" id="road-count-badge">0 roads</span>
+            </div>
+            <div class="traffic-road-list__body" id="traffic-road-list"></div>
+          </div>
         </section>
       </main>
       <footer class="app-footer" role="contentinfo">
@@ -209,8 +340,18 @@
       </footer>
     </div>
   </div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="../js/traffic/simulationConfig.js"></script>
+  <script src="../js/traffic/roadModel.js"></script>
+  <script src="../js/traffic/vehicleGenerator.js"></script>
+  <script src="../js/traffic/trafficFlow.js"></script>
+  <script src="../js/traffic/congestionModel.js"></script>
+  <script src="../js/traffic/speedModel.js"></script>
+  <script src="../js/traffic/intersectionModel.js"></script>
+  <script src="../js/traffic/simulationEngine.js"></script>
   <script src="../js/utils.js"></script>
   <script src="../js/navigation.js"></script>
   <script src="../js/app.js"></script>
+  <script src="../js/traffic.js"></script>
 </body>
 </html>

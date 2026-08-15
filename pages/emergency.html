@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="PROJECT VECTOR — Emergency Response Coordination">
-  <title>Emergency | PROJECT VECTOR</title>
+  <meta name="description" content="PROJECT VECTOR — Emergency Priority & Green Corridor Control">
+  <title>Emergency Control | PROJECT VECTOR</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   <link rel="stylesheet" href="../css/variables.css">
   <script src="../js/theme.js"></script>
   <link rel="stylesheet" href="../css/global.css">
@@ -16,7 +17,7 @@
 <body>
   <div class="app-layout">
     <div class="sidebar-overlay" id="sidebar-overlay" aria-hidden="true"></div>
-<aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
       <div class="sidebar__brand">
         <a href="dashboard.html" class="sidebar__brand-link">
           <div class="sidebar__logo" aria-hidden="true">
@@ -74,7 +75,7 @@
         <p class="sidebar__nav-label">Coordination</p>
         <ul>
           <li>
-            <a href="emergency.html" class="nav-link" data-page="emergency">
+            <a href="emergency.html" class="nav-link is-active" data-page="emergency">
               <svg class="nav-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
               </svg>
@@ -137,9 +138,10 @@
       </nav>
 
       <div class="sidebar__footer">
-        <p class="sidebar__version">Phase 1 Â· v0.1.0</p>
+        <p class="sidebar__version">Phase 9 · v0.1.0</p>
       </div>
     </aside>
+
     <div class="main-wrapper">
       <header class="topbar" role="banner">
         <div class="topbar__left">
@@ -151,11 +153,11 @@
           <h1 class="topbar__title">Emergency</h1>
         </div>
         <div class="topbar__right">
-          <div class="topbar__status" role="status" aria-label="System status: Demo Mode">
+          <div class="topbar__status" role="status" aria-label="System status: Simulation only">
             <span class="topbar__status-dot" aria-hidden="true"></span>
-            <span>Demo Mode</span>
+            <span>SIMULATION ONLY</span>
           </div>
-                    <button class="topbar__theme-toggle" id="theme-toggle" aria-label="Switch to light theme" title="Switch to light theme">
+          <button class="topbar__theme-toggle" id="theme-toggle" aria-label="Switch to light theme" title="Switch to light theme">
             <svg class="theme-icon theme-icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
             </svg>
@@ -178,39 +180,198 @@
           </div>
         </div>
       </header>
+
       <main class="main-content" id="main-content">
         <header class="page-header">
-          <h2 class="page-header__title">Emergency Response Coordination</h2>
-          <p class="page-header__subtitle">Coordinate emergency response across authorities with real-time incident tracking and priority corridor management.</p>
+          <h2 class="page-header__title">Emergency Priority &amp; Green Corridor</h2>
+          <p class="page-header__subtitle">Simulation-only emergency routing, corridor activation, and live LED alert orchestration.</p>
         </header>
+
         <div class="demo-banner" role="note">
           <svg class="demo-banner__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
           </svg>
-          <p class="demo-banner__text"><strong>● DEMO MODE</strong> — This page is a frontend placeholder. No real traffic data or backend functionality is available in Phase 1.</p>
+          <p class="demo-banner__text"><strong>● SIMULATION ONLY</strong> — This emergency system models priority corridors and signal preemption for prototype testing. It does not control real traffic signals, roadside equipment, or emergency dispatch services.</p>
         </div>
-        <section class="page-placeholder" aria-labelledby="placeholder-title">
-          <svg class="page-placeholder__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
-          </svg>
-          <h3 id="placeholder-title" class="page-placeholder__title">Feature Coming Soon</h3>
-          <p class="page-placeholder__desc">Emergency response coordination will be implemented in Phase 7.</p>
-          <div class="page-placeholder__features" aria-label="Planned features">
-              <span class="feature-tag">Incident reporting</span>
-              <span class="feature-tag">Priority corridors</span>
-              <span class="feature-tag">Multi-agency coordination</span>
-              <span class="feature-tag">Response timelines</span>
+
+        <section class="signal-summary-grid" aria-label="Emergency summary metrics">
+          <article class="kpi-card kpi-card--red">
+            <div class="kpi-card__icon" aria-hidden="true">🚑</div>
+            <p class="kpi-card__label">Active Emergencies</p>
+            <p class="kpi-card__value" id="emergency-active-count">0</p>
+            <div class="kpi-card__meta"><span class="kpi-card__trend trend trend--up">Live</span><span class="kpi-card__demo">SIM</span></div>
+          </article>
+          <article class="kpi-card kpi-card--green">
+            <div class="kpi-card__icon" aria-hidden="true">🟢</div>
+            <p class="kpi-card__label">Green Corridors</p>
+            <p class="kpi-card__value" id="emergency-green-corridors">0</p>
+            <div class="kpi-card__meta"><span class="kpi-card__trend trend trend--up">Steady</span><span class="kpi-card__demo">SIM</span></div>
+          </article>
+          <article class="kpi-card kpi-card--blue">
+            <div class="kpi-card__icon" aria-hidden="true">🚦</div>
+            <p class="kpi-card__label">Signals Prioritized</p>
+            <p class="kpi-card__value" id="emergency-signals-prioritized">0</p>
+            <div class="kpi-card__meta"><span class="kpi-card__trend trend trend--up">Queued</span><span class="kpi-card__demo">SIM</span></div>
+          </article>
+          <article class="kpi-card kpi-card--purple">
+            <div class="kpi-card__icon" aria-hidden="true">⏱</div>
+            <p class="kpi-card__label">Avg Time Saved</p>
+            <p class="kpi-card__value" id="emergency-time-saved">0.0 min</p>
+            <div class="kpi-card__meta"><span class="kpi-card__trend trend trend--up">Saved</span><span class="kpi-card__demo">SIM</span></div>
+          </article>
+        </section>
+
+        <section class="emergency-shell" aria-label="Emergency control workspace">
+          <div class="emergency-controls card">
+            <div class="card__header">
+              <div class="card__title">
+                <svg class="card__title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+                Emergency Control
+              </div>
+              <span class="badge badge--phase">SIM</span>
+            </div>
+            <div class="card__body">
+              <form id="emergency-form" class="emergency-form" novalidate>
+                <div class="emergency-form__grid">
+                  <label class="form-field">
+                    <span class="form-field__label">Vehicle ID</span>
+                    <input id="vehicle-id" type="text" value="AMB-042" placeholder="AMB-042">
+                  </label>
+
+                  <label class="form-field">
+                    <span class="form-field__label">Type</span>
+                    <select id="vehicle-type" aria-label="Vehicle type"></select>
+                  </label>
+
+                  <label class="form-field">
+                    <span class="form-field__label">Origin</span>
+                    <select id="origin-select" aria-label="Vehicle origin"></select>
+                  </label>
+
+                  <label class="form-field">
+                    <span class="form-field__label">Destination</span>
+                    <select id="destination-select" aria-label="Vehicle destination"></select>
+                  </label>
+
+                  <label class="form-field">
+                    <span class="form-field__label">Priority</span>
+                    <select id="priority-select" aria-label="Vehicle priority"></select>
+                  </label>
+                </div>
+
+                <div class="emergency-form__actions">
+                  <button type="submit" class="button button--primary">Create Emergency</button>
+                  <button id="emergency-toggle" type="button" class="button button--ghost">EMERGENCY SIMULATION ON</button>
+                  <button id="reset-emergency-sim" type="button" class="button button--ghost">Reset</button>
+                </div>
+              </form>
+            </div>
           </div>
-          <span class="badge badge--phase">Phase 7</span>
+
+          <div class="emergency-overview card">
+            <div class="card__header">
+              <div class="card__title">
+                <svg class="card__title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M5 12h14"/><path d="M12 5v14"/><circle cx="12" cy="12" r="9"/>
+                </svg>
+                Live Alert &amp; Corridor Status
+              </div>
+            </div>
+            <div class="card__body emergency-overview__body">
+              <div id="emergency-alert-panel" class="emergency-alert-panel"></div>
+              <div id="emergency-led-display" class="emergency-led-display"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="emergency-map-section card" aria-label="Emergency route map">
+          <div class="card__header">
+            <div class="card__title">
+              <svg class="card__title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 11.5V5.5A1.5 1.5 0 0 1 4.5 4h15A1.5 1.5 0 0 1 21 5.5v6"/><path d="M7 20h10"/><path d="M12 4v16"/>
+              </svg>
+              Priority Route Map
+            </div>
+            <span class="card__badge">Network View</span>
+          </div>
+          <div class="card__body">
+            <div id="emergency-map" class="emergency-map" aria-label="Emergency corridor map"></div>
+          </div>
+        </section>
+
+        <section class="emergency-lower-grid">
+          <div class="card">
+            <div class="card__header">
+              <div class="card__title">
+                <svg class="card__title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M4 6h16v12H4z"/><path d="M8 10h8"/><path d="M8 14h5"/>
+                </svg>
+                Active Emergency Vehicles
+              </div>
+            </div>
+            <div class="card__body">
+              <div id="emergency-vehicle-table"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card__header">
+              <div class="card__title">
+                <svg class="card__title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="9"/>
+                </svg>
+                Selected Vehicle Detail
+              </div>
+            </div>
+            <div class="card__body">
+              <div id="emergency-detail-panel"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="emergency-lower-grid">
+          <div class="card">
+            <div class="card__header">
+              <div class="card__title">
+                <svg class="card__title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M7 17l10-10"/><path d="M7 7h10v10"/>
+                </svg>
+                Event Log
+              </div>
+            </div>
+            <div class="card__body">
+              <div id="emergency-event-log" class="event-log"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card__header">
+              <div class="card__title">
+                <svg class="card__title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M3 12h18"/><path d="M12 3v18"/>
+                </svg>
+                Recent History
+              </div>
+            </div>
+            <div class="card__body">
+              <div id="emergency-history" class="history-list"></div>
+            </div>
+          </div>
         </section>
       </main>
+
       <footer class="app-footer" role="contentinfo">
-        <p>PROJECT VECTOR &mdash; Phase 1 Frontend Prototype &mdash; All data is DEMO DATA</p>
+        <p>PROJECT VECTOR &mdash; Phase 9 simulation prototype &mdash; DEMO DATA ONLY</p>
       </footer>
     </div>
   </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="../js/utils.js"></script>
   <script src="../js/navigation.js"></script>
   <script src="../js/app.js"></script>
+  <script src="../js/emergency.js"></script>
 </body>
 </html>

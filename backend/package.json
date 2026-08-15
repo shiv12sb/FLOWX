@@ -1,0 +1,36 @@
+{
+  "name": "flowx-traffic-backend",
+  "version": "1.0.0",
+  "description": "Backend foundation for the Smart Traffic Command & Intelligent Routing System",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "prisma:generate": "npx prisma generate",
+    "prisma:migrate": "npx prisma migrate dev",
+    "prisma:studio": "npx prisma studio"
+  },
+  "keywords": [
+    "traffic",
+    "express",
+    "prisma",
+    "postgresql",
+    "jwt"
+  ],
+  "author": "FlowX",
+  "license": "MIT",
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.4.1",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "prisma": "^5.22.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.16"
+  }
+}

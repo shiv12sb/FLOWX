@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="PROJECT VECTOR — Planning Authority Coordination">
-  <title>Authorities | PROJECT VECTOR</title>
+  <meta name="description" content="FLOWX — Multi-Authority Coordination Simulation">
+  <title>SMART AUTHORITIES | FLOWX</title>
   <link rel="stylesheet" href="../css/variables.css">
   <script src="../js/theme.js"></script>
   <link rel="stylesheet" href="../css/global.css">
@@ -12,11 +12,46 @@
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/responsive.css">
   <link rel="stylesheet" href="../css/animations.css">
+  <style>
+    .authority-shell { display: grid; gap: 1.25rem; }
+    .authority-summary-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 1rem; }
+    .authority-banner { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.1rem; border-radius: 16px; border: 1px solid rgba(148,163,184,0.2); background: rgba(15,23,42,0.26); }
+    .authority-banner.is-warning { border-color: rgba(249,115,22,0.7); background: rgba(120,53,15,0.2); }
+    .authority-banner.is-safe { border-color: rgba(34,197,94,0.7); background: rgba(6,78,59,0.18); }
+    .alert-banner__content { display: flex; align-items: flex-start; gap: 1rem; }
+    .alert-banner__icon { font-size: 1.6rem; }
+    .authority-content { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 1.25rem; }
+    .authority-table table { width: 100%; border-collapse: collapse; }
+    .authority-table th, .authority-table td { text-align: left; padding: 0.8rem 0.7rem; border-bottom: 1px solid rgba(148,163,184,0.1); }
+    .authority-row__label { display: flex; align-items: center; gap: 0.7rem; }
+    .authority-row__swatch { display: inline-block; width: 11px; height: 11px; border-radius: 50%; }
+    .authority-status { display: inline-flex; padding: 0.2rem 0.55rem; border-radius: 999px; font-size: 0.7rem; }
+    .authority-status--good { background: rgba(34,197,94,0.14); color: #8ef2b2; }
+    .authority-status--warn { background: rgba(245,158,11,0.14); color: #f8d87f; }
+    .authority-status--critical { background: rgba(239,68,68,0.16); color: #fca5a5; }
+    .authority-plan-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.8rem; }
+    .authority-plan-item { border: 1px solid rgba(148,163,184,0.14); border-radius: 12px; padding: 0.8rem; background: rgba(15,23,42,0.16); }
+    .authority-plan-item__topline { display: flex; align-items: center; gap: 0.55rem; }
+    .authority-plan-item__delta { margin-left: auto; font-size: 0.73rem; }
+    .authority-plan-item__delta.is-improving { color: #9ae6b4; }
+    .authority-plan-item__delta.is-challenged { color: #fbbf24; }
+    .authority-plan-item__bar { margin-top: 0.7rem; height: 8px; border-radius: 999px; background: rgba(148,163,184,0.12); overflow: hidden; }
+    .authority-plan-item__bar span { display: block; height: 100%; background: linear-gradient(90deg, #22c55e, #00c8ff); border-radius: inherit; }
+    .authority-log-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.75rem; }
+    .authority-log-list li { display: grid; grid-template-columns: auto 1fr; gap: 0.65rem; padding: 0.7rem; border: 1px solid rgba(148,163,184,0.11); border-radius: 10px; background: rgba(15,23,42,0.12); }
+    .authority-log__time { color: #9fe4ff; font-size: 0.72rem; }
+    .authority-log-list p { margin: 0.2rem 0 0; color: rgba(255,255,255,0.72); font-size: 0.77rem; }
+    .authority-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .action-button { border: 1px solid rgba(148,163,184,0.2); background: rgba(15,23,42,0.2); color: #e2e8f0; border-radius: 10px; padding: 0.68rem 0.9rem; cursor: pointer; }
+    .action-button--primary { background: linear-gradient(135deg, rgba(0,200,255,0.18), rgba(59,130,246,0.18)); border-color: rgba(96,165,250,0.42); }
+    @media (max-width: 980px) { .authority-summary-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } .authority-content { grid-template-columns: 1fr; } }
+    @media (max-width: 560px) { .authority-summary-grid { grid-template-columns: 1fr; } }
+  </style>
 </head>
 <body>
   <div class="app-layout">
     <div class="sidebar-overlay" id="sidebar-overlay" aria-hidden="true"></div>
-<aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
       <div class="sidebar__brand">
         <a href="dashboard.html" class="sidebar__brand-link">
           <div class="sidebar__logo" aria-hidden="true">
@@ -37,138 +72,37 @@
       <nav class="sidebar__nav" aria-label="Primary">
         <p class="sidebar__nav-label">Operations</p>
         <ul>
-          <li>
-            <a href="dashboard.html" class="nav-link" data-page="dashboard">
-              <svg class="nav-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
-              </svg>
-              Dashboard
-            </a>
-          </li>
-          <li>
-            <a href="traffic.html" class="nav-link" data-page="traffic">
-              <svg class="nav-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M9 17H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-4"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/>
-              </svg>
-              Live Traffic
-            </a>
-          </li>
-          <li>
-            <a href="routing.html" class="nav-link" data-page="routing">
-              <svg class="nav-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/>
-              </svg>
-              Smart Routing
-            </a>
-          </li>
-          <li>
-            <a href="signals.html" class="nav-link" data-page="signals">
-              <svg class="nav-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <rect x="7" y="2" width="10" height="20" rx="2"/><circle cx="12" cy="7" r="2" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none" opacity="0.5"/><circle cx="12" cy="17" r="2" fill="currentColor" stroke="none" opacity="0.3"/>
-              </svg>
-              Signal Control
-            </a>
-          </li>
+          <li><a href="dashboard.html" class="nav-link" data-page="dashboard">Dashboard</a></li>
+          <li><a href="traffic.html" class="nav-link" data-page="traffic">Live Traffic</a></li>
+          <li><a href="routing.html" class="nav-link" data-page="routing">Smart Routing</a></li>
+          <li><a href="signals.html" class="nav-link" data-page="signals">Signal Control</a></li>
         </ul>
-
         <p class="sidebar__nav-label">Coordination</p>
         <ul>
-          <li>
-            <a href="emergency.html" class="nav-link" data-page="emergency">
-              <svg class="nav-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
-              </svg>
-              Emergency
-            </a>
-          </li>
-          <li>
-            <a href="weather.html" class="nav-link" data-page="weather">
-              <svg class="nav-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/>
-              </svg>
-              Weather
-            </a>
-          </li>
-          <li>
-            <a href="ambulance.html" class="nav-link" data-page="ambulance">
-              <svg class="nav-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <rect x="1" y="6" width="16" height="12" rx="2"/><path d="M17 10h4l3 3v5h-7V10z"/><circle cx="6" cy="18" r="2"/><circle cx="20" cy="18" r="2"/><line x1="9" y1="12" x2="9" y2="12.01"/><line x1="12" y1="9" x2="12" y2="15"/><line x1="15" y1="12" x2="15" y2="12.01"/>
-              </svg>
-              Ambulance
-            </a>
-          </li>
-          <li>
-            <a href="authorities.html" class="nav-link" data-page="authorities">
-              <svg class="nav-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v0"/><path d="M9 12v0"/><path d="M9 15v0"/><path d="M9 18v0"/>
-              </svg>
-              Authorities
-            </a>
-          </li>
-        </ul>
-
-        <p class="sidebar__nav-label">Intelligence</p>
-        <ul>
-          <li>
-            <a href="analytics.html" class="nav-link" data-page="analytics">
-              <svg class="nav-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
-              </svg>
-              Analytics
-            </a>
-          </li>
-          <li>
-            <a href="alerts.html" class="nav-link" data-page="alerts">
-              <svg class="nav-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-              </svg>
-              Alerts
-            </a>
-          </li>
-          <li>
-            <a href="settings.html" class="nav-link" data-page="settings">
-              <svg class="nav-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-              </svg>
-              Settings
-            </a>
-          </li>
+          <li><a href="emergency.html" class="nav-link" data-page="emergency">Emergency</a></li>
+          <li><a href="weather.html" class="nav-link" data-page="weather">Weather</a></li>
+          <li><a href="ambulance.html" class="nav-link" data-page="ambulance">Ambulance</a></li>
+          <li><a href="authorities.html" class="nav-link" data-page="authorities">Authorities</a></li>
         </ul>
       </nav>
 
       <div class="sidebar__footer">
-        <p class="sidebar__version">Phase 1 Â· v0.1.0</p>
+        <p class="sidebar__version">Phase 12 · v0.1.0</p>
       </div>
     </aside>
+
     <div class="main-wrapper">
       <header class="topbar" role="banner">
         <div class="topbar__left">
-          <button class="topbar__menu-btn" id="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="sidebar">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
-            </svg>
-          </button>
+          <button class="topbar__menu-btn" id="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="sidebar">☰</button>
           <h1 class="topbar__title">Authorities</h1>
         </div>
         <div class="topbar__right">
-          <div class="topbar__status" role="status" aria-label="System status: Demo Mode">
+          <div class="topbar__status" role="status" aria-label="System status: Simulated authority coordination">
             <span class="topbar__status-dot" aria-hidden="true"></span>
-            <span>Demo Mode</span>
+            <span>SIMULATED DATA</span>
           </div>
-                    <button class="topbar__theme-toggle" id="theme-toggle" aria-label="Switch to light theme" title="Switch to light theme">
-            <svg class="theme-icon theme-icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-            </svg>
-            <svg class="theme-icon theme-icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-            </svg>
-          </button>
-          <button class="topbar__notifications" id="notifications-btn" aria-label="Notifications (placeholder)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-            </svg>
-            <span class="topbar__notif-badge" aria-hidden="true"></span>
-          </button>
+          <button class="topbar__theme-toggle" id="theme-toggle" aria-label="Switch theme">☼</button>
           <div class="topbar__user" aria-label="User profile">
             <div class="topbar__avatar" aria-hidden="true">OP</div>
             <div class="topbar__user-info">
@@ -178,39 +112,164 @@
           </div>
         </div>
       </header>
+
       <main class="main-content" id="main-content">
         <header class="page-header">
-          <h2 class="page-header__title">Planning Authority Coordination</h2>
-          <p class="page-header__subtitle">Manage and coordinate traffic operations across multiple planning authorities with jurisdiction-aware load distribution.</p>
+          <h2 class="page-header__title">MULTI-PLANNING-AUTHORITY COORDINATION</h2>
+          <p class="page-header__subtitle">Detect uneven traffic distribution across planning authorities and apply coordinated optimization for jurisdiction balancing.</p>
         </header>
+
         <div class="demo-banner" role="note">
           <svg class="demo-banner__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
           </svg>
-          <p class="demo-banner__text"><strong>● DEMO MODE</strong> — This page is a frontend placeholder. No real traffic data or backend functionality is available in Phase 1.</p>
+          <p class="demo-banner__text"><strong>● SIMULATED MULTI-AUTHORITY SYSTEM</strong> — This module uses synthetic traffic and jurisdiction data for demonstration only. It does not connect to live authority networks, fleet systems, or field controls.</p>
         </div>
-        <section class="page-placeholder" aria-labelledby="placeholder-title">
-          <svg class="page-placeholder__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
-          </svg>
-          <h3 id="placeholder-title" class="page-placeholder__title">Feature Coming Soon</h3>
-          <p class="page-placeholder__desc">Multi-authority coordination will be implemented in Phase 10.</p>
-          <div class="page-placeholder__features" aria-label="Planned features">
-              <span class="feature-tag">Authority dashboard</span>
-              <span class="feature-tag">Jurisdiction mapping</span>
-              <span class="feature-tag">Cross-boundary coordination</span>
-              <span class="feature-tag">Capacity sharing</span>
+
+        <div class="authority-shell">
+          <div id="authority-displacement-banner" class="authority-banner is-warning" role="alert"></div>
+
+          <section class="authority-summary-grid" aria-label="Authority summary metrics">
+            <article class="kpi-card kpi-card--blue">
+              <div class="kpi-card__icon" aria-hidden="true">⚖</div>
+              <p class="kpi-card__label">Network Balance</p>
+              <p class="kpi-card__value" id="authority-balance-score">0%</p>
+              <div class="kpi-card__meta"><span class="kpi-card__trend trend trend--up">Load</span><span class="kpi-card__demo">SIM</span></div>
+            </article>
+            <article class="kpi-card kpi-card--orange">
+              <div class="kpi-card__icon" aria-hidden="true">⚠</div>
+              <p class="kpi-card__label">Displacement Risk</p>
+              <p class="kpi-card__value" id="authority-displacement-risk">0%</p>
+              <div class="kpi-card__meta"><span class="kpi-card__trend trend trend--up">Risk</span><span class="kpi-card__demo">SIM</span></div>
+            </article>
+            <article class="kpi-card kpi-card--red">
+              <div class="kpi-card__icon" aria-hidden="true">🚨</div>
+              <p class="kpi-card__label">Alert Count</p>
+              <p class="kpi-card__value" id="authority-alert-count">0</p>
+              <div class="kpi-card__meta"><span class="kpi-card__trend trend trend--up">Watch</span><span class="kpi-card__demo">SIM</span></div>
+            </article>
+            <article class="kpi-card kpi-card--green">
+              <div class="kpi-card__icon" aria-hidden="true">📉</div>
+              <p class="kpi-card__label">Optimization Gain</p>
+              <p class="kpi-card__value" id="authority-optimization-gain">0 pts</p>
+              <div class="kpi-card__meta"><span class="kpi-card__trend trend trend--up">Improve</span><span class="kpi-card__demo">SIM</span></div>
+            </article>
+          </section>
+
+          <div class="authority-content">
+            <section class="card">
+              <div class="card__header">
+                <h3 class="card__title">Authority Load Matrix</h3>
+                <span class="card__badge">SIM</span>
+              </div>
+              <div class="card__body authority-table">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Authority</th>
+                      <th>Load</th>
+                      <th>Speed</th>
+                      <th>Queue</th>
+                      <th>Cross-boundary</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="authority-table-body"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="card">
+              <div class="card__header">
+                <h3 class="card__title">Coordinated Optimization</h3>
+                <span class="card__badge">SIM</span>
+              </div>
+              <div class="card__body">
+                <ul class="authority-plan-list" id="authority-plan-list"></ul>
+              </div>
+            </section>
           </div>
-          <span class="badge badge--phase">Phase 10</span>
-        </section>
+
+          <div class="authority-content">
+            <section class="card">
+              <div class="card__header">
+                <h3 class="card__title">Current Scenario</h3>
+                <span class="card__badge">SIM</span>
+              </div>
+              <div class="card__body">
+                <div class="authority-actions">
+                  <button type="button" class="action-button action-button--primary" id="authority-optimize-btn">Apply Coordination</button>
+                  <button type="button" class="action-button" id="authority-scenario-btn">Trigger Scenario</button>
+                  <button type="button" class="action-button" id="authority-reset-btn">Reset</button>
+                </div>
+                <p class="card__body-text" id="authority-scenario">AUTHORITY LOADS ARE STABLE</p>
+                <p class="card__body-text" id="authority-opt-summary"></p>
+              </div>
+            </section>
+
+            <section class="card">
+              <div class="card__header">
+                <h3 class="card__title">Authority Signals</h3>
+                <span class="card__badge">SIM</span>
+              </div>
+              <div class="card__body">
+                <div class="signal-summary-grid" aria-label="Authority signal summary">
+                  <article class="kpi-card kpi-card--blue">
+                    <div class="kpi-card__icon" aria-hidden="true">⬆</div>
+                    <p class="kpi-card__label">Highest Load</p>
+                    <p class="kpi-card__value" id="authority-highest-load">N/A</p>
+                  </article>
+                  <article class="kpi-card kpi-card--green">
+                    <div class="kpi-card__icon" aria-hidden="true">⬇</div>
+                    <p class="kpi-card__label">Lowest Load</p>
+                    <p class="kpi-card__value" id="authority-lowest-load">N/A</p>
+                  </article>
+                  <article class="kpi-card kpi-card--purple">
+                    <div class="kpi-card__icon" aria-hidden="true">↔</div>
+                    <p class="kpi-card__label">Balance Shift</p>
+                    <p class="kpi-card__value" id="authority-balance-reduction">0 pts</p>
+                  </article>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <section class="card">
+            <div class="card__header">
+              <h3 class="card__title">Coordination Log</h3>
+              <span class="card__badge">SIM</span>
+            </div>
+            <div class="card__body">
+              <ul class="authority-log-list" id="authority-log-list"></ul>
+            </div>
+          </section>
+        </div>
       </main>
+
       <footer class="app-footer" role="contentinfo">
-        <p>PROJECT VECTOR &mdash; Phase 1 Frontend Prototype &mdash; All data is DEMO DATA</p>
+        <p>FLOWX TRAFFIC &mdash; Phase 12 — MULTI-AUTHORITY COORDINATION &mdash; SIMULATED DATA ONLY</p>
       </footer>
     </div>
   </div>
+  <script src="../js/traffic/simulationConfig.js"></script>
+  <script src="../js/traffic/roadModel.js"></script>
+  <script src="../js/traffic/vehicleGenerator.js"></script>
+  <script src="../js/traffic/trafficFlow.js"></script>
+  <script src="../js/traffic/congestionModel.js"></script>
+  <script src="../js/traffic/speedModel.js"></script>
+  <script src="../js/traffic/intersectionModel.js"></script>
+  <script src="../js/traffic/simulationEngine.js"></script>
+  <script src="../js/weather/weatherEngine.js"></script>
   <script src="../js/utils.js"></script>
   <script src="../js/navigation.js"></script>
   <script src="../js/app.js"></script>
+  <script src="../js/authorities.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.FlowXAuthorityCoordination) {
+        window.FlowXAuthorityCoordination.init();
+      }
+    });
+  </script>
 </body>
 </html>
