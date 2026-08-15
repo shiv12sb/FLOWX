@@ -8,7 +8,11 @@
     "start": "node src/server.js",
     "prisma:generate": "npx prisma generate",
     "prisma:migrate": "npx prisma migrate dev",
-    "prisma:studio": "npx prisma studio"
+    "prisma:studio": "npx prisma studio",
+    "seed:incidents": "node scripts/seedIncidents.js",
+    "seed:signals": "node scripts/seedSignals.js",
+    "seed:emergencies": "node scripts/seedEmergencyUnits.js",
+    "seed:all": "node scripts/seedSignals.js && node scripts/seedIncidents.js && node scripts/seedEmergencyUnits.js"
   },
   "keywords": [
     "traffic",
@@ -28,9 +32,10 @@
     "express-rate-limit": "^7.4.1",
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
-    "prisma": "^5.22.0"
+    "prisma": "^5.22.0",
+    "ws": "^8.13.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.16"
+    "nodemon": "^3.1.14"
   }
 }

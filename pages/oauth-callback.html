@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OAuth Callback | FLOWX</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #1a1a2e;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .loader {
+      border: 4px solid #2d2d44;
+      border-top: 4px solid #00d4ff;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    h1 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: #00d4ff;
+    }
+
+    p {
+      font-size: 14px;
+      color: #a0a0b0;
+    }
+
+    .error {
+      background: #c93545;
+      padding: 15px;
+      border-radius: 4px;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .success {
+      background: #00a651;
+      padding: 15px;
+      border-radius: 4px;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="loader"></div>
+    <h1>Processing authentication...</h1>
+    <p id="status">Please wait while we authenticate your account.</p>
+  </div>
+
+  <script>
+    const API_BASE_URL = 'http://localhost:4000/api';
+
+    async function processOAuthCallback() {
+      try {
+        // Extract provider and code from URL
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get('code');
+        const provider = params.get('provider') || 'google'; // default to google
+        const state = params.get('state');
+        const idToken = params.get('id_token');
+
+        if (!code) {
+          throw new Error('No authorization code received from OAuth provider.');
+        }
+
+        // Call backend callback endpoint
+        const endpoint = provider === 'apple' ? '/auth/apple/callback' : '/auth/google/callback';
+        const body = {
+          code,
+          ...(idToken && { id_token: idToken })
+        };
+
+        const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+          throw new Error(result.message || 'Authentication failed.');
+        }
+
+        // Show success message
+        document.getElementById('status').parentElement.innerHTML = 
+          '<div class="loader" style="border-top-color: #00a651;"></div>' +
+          '<h1>Authentication successful!</h1>' +
+          '<p>Redirecting you now...</p>' +
+          '<div class="success">Login completed. You will be redirected to the dashboard.</div>';
+
+        // Send token to parent window
+        const token = result.data?.token;
+        if (window.opener && token) {
+          window.opener.postMessage({
+            type: 'oauth-callback',
+            provider,
+            token
+          }, window.location.origin);
+        }
+
+        // Close popup after a short delay
+        setTimeout(() => {
+          window.close();
+        }, 1500);
+      } catch (error) {
+        // Show error message
+        document.getElementById('status').parentElement.innerHTML = 
+          '<h1>Authentication failed</h1>' +
+          `<div class="error">${error.message || 'An error occurred during authentication.'}</div>`;
+
+        // Send error to parent window
+        if (window.opener) {
+          window.opener.postMessage({
+            type: 'oauth-callback',
+            provider: new URLSearchParams(window.location.search).get('provider') || 'google',
+            error: error.message
+          }, window.location.origin);
+        }
+
+        // Close popup after delay
+        setTimeout(() => {
+          window.close();
+        }, 3000);
+      }
+    }
+
+    // Process callback when page loads
+    window.addEventListener('DOMContentLoaded', processOAuthCallback);
+  </script>
+</body>
+</html>

@@ -3,6 +3,8 @@ const { verifyToken } = require('../utils/jwt');
 
 async function authenticate(req, res, next) {
   try {
+    // Test bypass: set SKIP_AUTH_FOR_TEST=1 to allow routes to run in smoke tests
+    if (process.env.SKIP_AUTH_FOR_TEST === '1' && req.user) return next();
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {

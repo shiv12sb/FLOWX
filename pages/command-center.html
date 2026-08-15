@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>FlowX — Command Center</title>
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="/js/commandCenter/commandCenter.js" defer></script>
+  <style>
+    .cc-legend { background: #fff; padding:8px; border:1px solid #ddd; position: absolute; top:120px; left:16px; z-index:4000; font-size:13px }
+    .emergency-marker { font-size:18px; text-shadow:0 0 2px #fff }
+    #operator-panel { margin-top:8px; }
+    #operator-selected { white-space:pre-wrap; max-height:120px; overflow:auto; font-family:monospace; background:#f9fafb; padding:8px; border:1px solid #eee }
+    #command-timeline .load-more { text-align:center; margin-top:6px }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>FLOWX COMMAND CENTER</h1>
+    <div id="system-status">Status: <span id="system-status-value">—</span></div>
+  </header>
+  <section id="kpi-row">
+    <div class="card">Active Incidents: <span id="kpi-incidents">0</span></div>
+    <div class="card">Critical Incidents: <span id="kpi-critical-incidents">0</span></div>
+    <div class="card">Congested Roads: <span id="kpi-congested">0</span></div>
+    <div class="card">Active Emergencies: <span id="kpi-emergencies">0</span></div>
+    <div class="card">Signals Attention: <span id="kpi-signals">0</span></div>
+    <div class="card">Predicted High-Risk Roads: <span id="kpi-predicted">0</span></div>
+  </section>
+
+  <section id="layer-controls" style="padding:8px">
+    <strong>Layers:</strong>
+    <label><input type="checkbox" id="layer-traffic" checked> Traffic</label>
+    <label><input type="checkbox" id="layer-incidents" checked> Incidents</label>
+    <label><input type="checkbox" id="layer-predictions" checked> Predictions</label>
+    <label><input type="checkbox" id="layer-signals" checked> Signals</label>
+    <label><input type="checkbox" id="layer-emergencies" checked> Emergencies</label>
+    <label><input type="checkbox" id="layer-routes" checked> Routes</label>
+  </section>
+  <div class="cc-legend" id="cc-legend">
+    <div><strong>Legend</strong></div>
+    <div><span style="display:inline-block;width:12px;height:8px;background:#dc2626;margin-right:6px"></span> High utilization</div>
+    <div><span style="display:inline-block;width:12px;height:8px;background:#f97316;margin-right:6px"></span> Moderate utilization</div>
+    <div><span style="display:inline-block;width:12px;height:8px;background:#16a34a;margin-right:6px"></span> Low utilization</div>
+    <div>🚑 Emergency</div>
+    <div style="margin-top:6px;font-size:12px;color:#666">Tip: click markers for quick actions</div>
+  </div>
+
+  <section id="risk-and-timeline" style="display:flex; gap:12px; padding:8px">
+    <div style="flex:1"><strong>Network Risk:</strong> <span id="risk-value">—</span></div>
+    <div style="flex:3">
+      <strong>Timeline:</strong>
+      <div style="margin:6px 0"><label>Filter: <select id="timeline-filter"><option value="all">All</option><option value="incident">Incidents</option><option value="emergency">Emergencies</option><option value="alert">Alerts</option></select></label></div>
+      <div id="command-timeline" style="max-height:120px; overflow:auto; border:1px solid #ddd; padding:6px"></div>
+    </div>
+  </section>
+
+  <main style="display:flex; gap:16px; padding:16px;">
+    <div style="flex:2;">
+      <div id="command-map" style="height:600px; background:#eef; border:1px solid #ccc">Map placeholder (uses existing map layer)</div>
+    </div>
+    <aside style="flex:1;">
+      <h2>Decision Intelligence</h2>
+      <div id="decision-list"></div>
+      <h3>Operator Actions</h3>
+      <div id="operator-panel">
+        <div id="operator-selected">No selection</div>
+        <div style="margin-top:8px">
+          <button id="op-view" class="button">View</button>
+          <button id="op-optimize" class="button">Optimize Route</button>
+          <button id="op-approve" class="button">Approve</button>
+        </div>
+      </div>
+      <h3>Alerts</h3>
+      <div id="alerts-list"></div>
+    </aside>
+  </main>
+
+  <footer style="padding:16px">
+    <div id="timeline">Timeline will appear here.</div>
+  </footer>
+</body>
+</html>

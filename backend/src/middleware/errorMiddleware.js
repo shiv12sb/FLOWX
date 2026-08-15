@@ -13,6 +13,8 @@ function errorHandler(err, req, res, next) {
     error: {}
   };
 
+  // Always log error stack on server for debugging in this environment
+  console.error('Unhandled error:', err && err.stack ? err.stack : err);
   if (process.env.NODE_ENV === 'development') {
     response.error = {
       stack: err.stack

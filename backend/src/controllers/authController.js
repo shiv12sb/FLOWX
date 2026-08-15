@@ -1,4 +1,5 @@
 const authService = require('../services/authService');
+const { handleGoogleCallback, getGoogleAuthUrl, handleAppleCallback, getAppleAuthUrl } = require('../services/oauthService');
 
 async function signup(req, res, next) {
   try {
@@ -56,9 +57,67 @@ async function logout(req, res) {
   });
 }
 
+async function initiateGoogleAuth(req, res, next) {
+  try {
+    const url = getGoogleAuthUrl();
+    return res.json({
+      success: true,
+      data: { url }
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function googleCallback(req, res, next) {
+  try {
+    const { code } = req.body;
+    const result = await handleGoogleCallback(code);
+
+    return res.json({
+      success: true,
+      message: 'Google authentication successful.',
+      data: result
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function initiateAppleAuth(req, res, next) {
+  try {
+    const url = getAppleAuthUrl();
+    return res.json({
+      success: true,
+      data: { url }
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function appleCallback(req, res, next) {
+  try {
+    const { code, id_token } = req.body;
+    const result = await handleAppleCallback(code, id_token);
+
+    return res.json({
+      success: true,
+      message: 'Apple authentication successful.',
+      data: result
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   signup,
   login,
   getMe,
-  logout
+  logout,
+  initiateGoogleAuth,
+  googleCallback,
+  initiateAppleAuth,
+  appleCallback
 };

@@ -696,7 +696,7 @@
     return normalizeRoadId(value) || locationMap[value] || value;
   }
 
-  function resolveRouteSelection() {
+  async function resolveRouteSelection() {
     const originSelect = document.getElementById('origin-select');
     const destinationSelect = document.getElementById('destination-select');
 
@@ -728,7 +728,28 @@
       return;
     }
 
-    const generated = generateRoutes(startId, endId);
+    // Try backend optimization API first, fall back to client-side engine
+    let generated = [];
+    try {
+        const usePrediction = Boolean(document.getElementById('use-prediction-checkbox')?.checked);
+        const resp = await fetch('/api/routes/optimize', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ origin: originValue, destination: destinationValue, usePrediction })
+        });
+      if (resp.ok) {
+        const payload = await resp.json();
+        if (payload && payload.success && payload.data && Array.isArray(payload.data.all) && payload.data.all.length) {
+          generated = payload.data.all;
+        }
+      }
+    } catch (e) {
+      // backend unavailable — silently fall back to client-side
+    }
+
+    if (!generated.length) {
+      generated = generateRoutes(startId, endId);
+    }
+
     if (!generated.length) {
       showMessage('No viable route found for the current network.');
       return;

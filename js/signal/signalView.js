@@ -269,6 +269,32 @@
         renderView();
       });
     }
+
+    const emergencyBtn = document.getElementById('emergency-priority-btn');
+    if (emergencyBtn) {
+      emergencyBtn.addEventListener('click', async () => {
+        const selected = getSelectedIntersection(window.FlowXSignalEngine.intersections || []);
+        if (!selected) return alert('No intersection selected');
+        const direction = prompt('Enter emergency direction (NORTH, SOUTH, EAST, WEST):', 'NORTH');
+        if (!direction) return;
+        try {
+          const token = localStorage.getItem('authToken');
+          const resp = await fetch(`/api/signals/${encodeURIComponent(selected.id)}/emergency`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json', ...(token?{ Authorization: `Bearer ${token}` }: {}) },
+            body: JSON.stringify({ direction: direction.toUpperCase() })
+          });
+          const json = await resp.json();
+          if (json && json.success) {
+            selected.recommendedPlan = json.data;
+            selected.recommendation = (selected.recommendation || '') + '\nEmergency priority recommended.';
+            alert('Emergency priority suggestion received');
+            renderView();
+          } else {
+            alert('Emergency request failed');
+          }
+        } catch (e) { alert('Emergency request error'); }
+      });
+    }
   }
 
   function init() {

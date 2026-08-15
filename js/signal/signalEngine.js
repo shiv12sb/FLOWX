@@ -97,6 +97,18 @@
           intersection.recommendation = nsDemand > ewDemand
             ? `North-South traffic demand is significantly higher than East-West demand. Recommended North-South Green: ${intersection.northSouthGreen || 32} sec.${weatherText}`
             : `East-West demand is elevated. Recommended East-West Green: ${intersection.eastWestGreen || 32} sec.${weatherText}`;
+          // try to fetch server suggestion once (non-blocking)
+          if (window.fetch && !intersection.serverSuggestionFetched) {
+            intersection.serverSuggestionFetched = true;
+            try {
+              fetch(`/api/signals/${encodeURIComponent(intersection.id)}/optimization`).then(r=>r.json()).then((j)=>{
+                if (j && j.success && j.data) {
+                  intersection.recommendedPlan = j.data;
+                  if (j.data.notes && j.data.notes.length) intersection.recommendation += ' \n' + j.data.notes.join('; ');
+                }
+              }).catch(()=>{});
+            } catch (e) {}
+          }
         }
       });
 
@@ -131,6 +143,20 @@
         signalMode: 'SMART'
       }));
       logEvent(this, '✓ SMART SIGNAL SIMULATION ACTIVE');
+      // request backend suggestions for visible intersections
+      if (window.fetch) {
+        this.intersections.forEach((intersection) => {
+          try {
+            fetch(`/api/signals/${encodeURIComponent(intersection.id)}/optimization`).then(r=>r.json()).then((j)=>{
+              if (j && j.success && j.data) {
+                intersection.recommendedPlan = j.data;
+                intersection.recommendation = intersection.recommendation || '';
+                if (j.data.notes && j.data.notes.length) intersection.recommendation += '\n' + j.data.notes.join('; ');
+              }
+            }).catch(()=>{});
+          } catch (e) {}
+        });
+      }
       return this.getState();
     },
 

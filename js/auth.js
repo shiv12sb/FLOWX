@@ -1,5 +1,6 @@
 (function () {
   const API_BASE_URL = 'http://localhost:4000/api';
+  let oauthPopup = null;
 
   function setMessage(message, type = 'info') {
     const el = document.getElementById('auth-message');
@@ -97,6 +98,114 @@
     return true;
   }
 
+  /**
+   * Initiate Google OAuth flow
+   */
+  async function initiateGoogleAuth() {
+    try {
+      setMessage('Connecting to Google...', 'info');
+      
+      const result = await apiRequest('/auth/google/initiate', 'GET');
+      if (!result.data?.url) {
+        setMessage('Google OAuth is not configured. Please contact administrator.', 'error');
+        return;
+      }
+
+      // Open OAuth consent screen in popup
+      const width = 500;
+      const height = 600;
+      const left = window.screenX + (window.outerWidth - width) / 2;
+      const top = window.screenY + (window.outerHeight - height) / 2;
+
+      oauthPopup = window.open(
+        result.data.url,
+        'google-oauth',
+        `width=${width},height=${height},left=${left},top=${top}`
+      );
+
+      if (!oauthPopup) {
+        setMessage('Could not open Google auth popup. Check browser popup settings.', 'error');
+        return;
+      }
+
+      // Listen for OAuth callback from popup
+      window.addEventListener('message', async (event) => {
+        if (event.origin !== window.location.origin) return;
+
+        if (event.data.type === 'oauth-callback' && event.data.provider === 'google') {
+          if (oauthPopup) oauthPopup.close();
+
+          if (event.data.error) {
+            setMessage(`Google auth failed: ${event.data.error}`, 'error');
+            return;
+          }
+
+          if (event.data.token) {
+            saveToken(event.data.token);
+            setMessage('Login successful!', 'success');
+            setTimeout(() => redirectToDashboard(), 600);
+          }
+        }
+      }, { once: false });
+    } catch (error) {
+      setMessage(error.message || 'Google authentication failed.', 'error');
+    }
+  }
+
+  /**
+   * Initiate Apple OAuth flow
+   */
+  async function initiateAppleAuth() {
+    try {
+      setMessage('Connecting to Apple...', 'info');
+
+      const result = await apiRequest('/auth/apple/initiate', 'GET');
+      if (!result.data?.url) {
+        setMessage('Apple OAuth is not configured. Please contact administrator.', 'error');
+        return;
+      }
+
+      // Open OAuth consent screen in popup
+      const width = 500;
+      const height = 700;
+      const left = window.screenX + (window.outerWidth - width) / 2;
+      const top = window.screenY + (window.outerHeight - height) / 2;
+
+      oauthPopup = window.open(
+        result.data.url,
+        'apple-oauth',
+        `width=${width},height=${height},left=${left},top=${top}`
+      );
+
+      if (!oauthPopup) {
+        setMessage('Could not open Apple auth popup. Check browser popup settings.', 'error');
+        return;
+      }
+
+      // Listen for OAuth callback from popup
+      window.addEventListener('message', async (event) => {
+        if (event.origin !== window.location.origin) return;
+
+        if (event.data.type === 'oauth-callback' && event.data.provider === 'apple') {
+          if (oauthPopup) oauthPopup.close();
+
+          if (event.data.error) {
+            setMessage(`Apple auth failed: ${event.data.error}`, 'error');
+            return;
+          }
+
+          if (event.data.token) {
+            saveToken(event.data.token);
+            setMessage('Login successful!', 'success');
+            setTimeout(() => redirectToDashboard(), 600);
+          }
+        }
+      }, { once: false });
+    } catch (error) {
+      setMessage(error.message || 'Apple authentication failed.', 'error');
+    }
+  }
+
   function bindAuthForms() {
     const loginForm = document.getElementById('login-form');
     const signupForm = document.getElementById('signup-form');
@@ -141,13 +250,31 @@
         }
 
         try {
-          setMessage('Creating your account...', 'info');gelopen
+          setMessage('Creating your account...', 'info');
           const result = await signupUser(payload);
           setMessage(result.message || 'Signup successful.', 'success');
           setTimeout(() => redirectToDashboard(), 700);
         } catch (error) {
           setMessage(error.message || 'Signup failed. Please try again.', 'error');
         }
+      });
+    }
+
+    // Bind OAuth buttons
+    const googleButton = document.querySelector('.auth-methods button:nth-child(1)');
+    const appleButton = document.querySelector('.auth-methods button:nth-child(2)');
+
+    if (googleButton) {
+      googleButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        initiateGoogleAuth();
+      });
+    }
+
+    if (appleButton) {
+      appleButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        initiateAppleAuth();
       });
     }
   }
@@ -164,6 +291,8 @@
     getCurrentUser,
     clearToken,
     saveToken,
-    getToken
+    getToken,
+    initiateGoogleAuth,
+    initiateAppleAuth
   };
 })();

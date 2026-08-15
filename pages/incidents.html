@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Incidents · FLOWX</title>
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="../js/theme.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <main class="main-content">
+      <header class="page-header"><h2>Incident Management</h2><p>Active incidents and controls</p></header>
+      <section class="card">
+        <div class="card__body">
+          <div id="incident-controls">
+            <button id="refresh-incidents" class="btn">Refresh</button>
+            <button id="open-report" class="btn btn--primary">+ Report Incident</button>
+          </div>
+          <div id="incidents-grid">
+            <div id="incidents-list" style="flex:1"></div>
+            <div id="incidents-analytics" style="width:260px; margin-left:16px"></div>
+          </div>
+        </div>
+      </section>
+
+      <div id="report-modal" class="modal" aria-hidden="true" style="display:none">
+        <div class="modal__dialog">
+          <div class="modal__header"><h3>Report Incident</h3></div>
+          <div class="modal__body">
+            <label>Title<input id="report-title" /></label>
+            <label>Type<select id="report-type"><option>ACCIDENT</option><option>ROAD_BLOCK</option><option>CONSTRUCTION</option><option>SIGNAL_FAILURE</option><option>VEHICLE_BREAKDOWN</option><option>EMERGENCY</option><option>FLOOD</option><option>FIRE</option><option>OTHER</option></select></label>
+            <label>Severity<select id="report-severity"><option>LOW</option><option>MEDIUM</option><option>HIGH</option><option>CRITICAL</option></select></label>
+            <label>Road<input id="report-road" placeholder="wardha-road or Ring Road"/></label>
+            <label>Latitude<input id="report-lat" type="number" step="0.0001"/></label>
+            <label>Longitude<input id="report-lon" type="number" step="0.0001"/></label>
+            <label>Description<textarea id="report-desc"></textarea></label>
+            <div id="report-note"><small>Note: reporting requires authentication. If you are logged-in the token will be used automatically.</small></div>
+          </div>
+          <div class="modal__footer">
+            <button id="submit-report" class="btn btn--primary">Submit</button>
+            <button id="close-report" class="btn">Close</button>
+          </div>
+        </div>
+      </div>
+      <section class="card">
+        <div class="card__header"><div class="card__title">Incident Map</div></div>
+        <div class="card__body"><div id="incident-map" style="height:400px"></div></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script src="../js/incidents.js"></script>
+</body>
+</html>

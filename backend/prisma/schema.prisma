@@ -35,3 +35,149 @@ model User {
 
   @@map("users")
 }
+
+enum IncidentType {
+  ACCIDENT
+  ROAD_BLOCK
+  CONSTRUCTION
+  SIGNAL_FAILURE
+  VEHICLE_BREAKDOWN
+  EMERGENCY
+  FLOOD
+  FIRE
+  OTHER
+}
+
+enum Severity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum IncidentStatus {
+  ACTIVE
+  INVESTIGATING
+  RESOLVED
+}
+
+model Incident {
+  id                 String         @id @default(uuid())
+  title              String
+  description        String?
+  type               IncidentType
+  severity           Severity       @default(MEDIUM)
+  status             IncidentStatus @default(ACTIVE)
+  latitude           Float?
+  longitude          Float?
+  road               String?        // road id or name
+  intersection       String?
+  reportedAt         DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  resolvedAt         DateTime?
+  estimatedClearTime DateTime?
+  source             String?        // user/system/manual
+
+  @@map("incidents")
+}
+
+model TrafficObservation {
+  id           String   @id @default(uuid())
+  roadId       String
+  trafficLevel Float
+  averageSpeed Float?
+  vehicleCount Int?
+  timestamp    DateTime
+  createdAt    DateTime @default(now())
+
+  @@index([roadId, timestamp])
+  @@map("traffic_observations")
+}
+
+enum SignalStatus {
+  NORMAL
+  OPTIMIZED
+  MANUAL
+  OFFLINE
+}
+
+model Signal {
+  id         String      @id @default(uuid())
+  name       String
+  location   String?
+  latitude   Float?
+  longitude  Float?
+  status     SignalStatus @default(NORMAL)
+  cycleLength Int?       // seconds
+  approaches Json?       // array of { direction: 'NORTH'|'SOUTH'..., roadId, greenTime, queue }
+  lastUpdated DateTime?  @updatedAt
+  createdAt  DateTime    @default(now())
+
+  @@map("signals")
+}
+
+model Alert {
+  id        String   @id @default(uuid())
+  level     String
+  message   String
+  signalId  String?
+  createdAt DateTime @default(now())
+
+  @@map("alerts")
+}
+
+enum EmergencyType {
+  AMBULANCE
+  FIRE
+  POLICE
+  RESCUE
+}
+
+enum EmergencyStatus {
+  PENDING
+  ASSIGNED
+  EN_ROUTE
+  ARRIVED
+  RESOLVED
+  CANCELLED
+}
+
+enum UnitStatus {
+  AVAILABLE
+  ASSIGNED
+  EN_ROUTE
+  BUSY
+  OFFLINE
+}
+
+model EmergencyRequest {
+  id                  String         @id @default(uuid())
+  type                EmergencyType
+  severity            Severity       @default(MEDIUM)
+  status              EmergencyStatus @default(PENDING)
+  latitude            Float
+  longitude           Float
+  destinationLatitude Float?
+  destinationLongitude Float?
+  description         String?
+  reportedAt          DateTime       @default(now())
+  assignedUnitId      String?
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+
+  @@map("emergencies")
+}
+
+model EmergencyUnit {
+  id               String   @id @default(uuid())
+  unitNumber       String   @unique
+  type             EmergencyType
+  status           UnitStatus @default(AVAILABLE)
+  latitude         Float?
+  longitude        Float?
+  currentEmergencyId String?
+  lastUpdated      DateTime? @updatedAt
+  createdAt        DateTime  @default(now())
+
+  @@map("emergency_units")
+}
