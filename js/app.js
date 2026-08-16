@@ -10,8 +10,39 @@ const STCApp = {
     this.initNotifications();
     this.initDemoNotice();
 
-    if (window.location.pathname.endsWith('dashboard.html')) {
-      STCAuth.guardDashboard();
+    const protectedPages = [
+      'dashboard.html',
+      'profile.html',
+      'settings.html',
+      'traffic.html',
+      'routing.html',
+      'signals.html',
+      'emergencies.html',
+      'incidents.html',
+      'predictions.html',
+      'command-center.html',
+      'emergency.html',
+      'alerts.html',
+      'analytics.html',
+      'weather.html',
+      'ambulance.html',
+      'authorities.html'
+    ];
+
+    const currentPage = STCUtils.getCurrentPage ? STCUtils.getCurrentPage() : window.location.pathname.split('/').pop();
+    const isProtectedPage = protectedPages.includes(currentPage);
+
+    if (window.STCAuth) {
+      STCAuth.init();
+      if (isProtectedPage) {
+        STCAuth.guardDashboard();
+      }
+      STCAuth.initUserMenu();
+      STCAuth.hydrateUserSession();
+    }
+
+    if (isProtectedPage) {
+      STCAuth?.guardDashboard();
     }
 
     if (window.location.pathname.endsWith('weather.html') && window.FlowXWeatherView) {

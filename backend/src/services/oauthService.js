@@ -133,11 +133,14 @@ async function handleGoogleCallback(code) {
         }
       });
     } else if (user.authProvider === 'LOCAL') {
-      // User exists with local auth; update to support Google
       user = await prisma.user.update({
         where: { id: user.id },
         data: { authProvider: 'GOOGLE' }
       });
+    } else if (user.authProvider !== 'GOOGLE') {
+      const error = new Error('This account is already linked to a different sign-in provider. Please use the original sign-in method.');
+      error.statusCode = 409;
+      throw error;
     }
 
     if (!user.isActive) {
@@ -243,11 +246,14 @@ async function handleAppleCallback(code, idToken) {
         }
       });
     } else if (user.authProvider === 'LOCAL') {
-      // User exists with local auth; update to support Apple
       user = await prisma.user.update({
         where: { id: user.id },
         data: { authProvider: 'APPLE' }
       });
+    } else if (user.authProvider !== 'APPLE') {
+      const error = new Error('This account is already linked to a different sign-in provider. Please use the original sign-in method.');
+      error.statusCode = 409;
+      throw error;
     }
 
     if (!user.isActive) {

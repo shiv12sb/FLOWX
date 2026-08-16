@@ -115,6 +115,7 @@ async function getCurrentUser(userId) {
       phone: true,
       role: true,
       authProvider: true,
+      isActive: true,
       createdAt: true
     }
   });
@@ -128,9 +129,43 @@ async function getCurrentUser(userId) {
   return user;
 }
 
+async function updateCurrentUser(userId, updates = {}) {
+  const name = String(updates.name || '').trim();
+  const phoneValue = updates.phone === undefined ? undefined : String(updates.phone || '').trim();
+
+  if (!name) {
+    const error = new Error('Name is required.');
+    error.statusCode = 400;
+    throw error;
+  }
+
+  const data = {
+    name,
+    ...(phoneValue !== undefined ? { phone: phoneValue || null } : {})
+  };
+
+  const user = await prisma.user.update({
+    where: { id: userId },
+    data,
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      phone: true,
+      role: true,
+      authProvider: true,
+      isActive: true,
+      createdAt: true
+    }
+  });
+
+  return user;
+}
+
 module.exports = {
   signup,
   login,
   getCurrentUser,
+  updateCurrentUser,
   sanitizeUser
 };

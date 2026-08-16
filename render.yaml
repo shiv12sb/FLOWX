@@ -1,0 +1,51 @@
+services:
+  - type: web
+    name: flowx-traffic
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install && npx prisma generate
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        scope: runtime
+        value: 4000
+      - key: DATABASE_URL
+        scope: runtime
+        fromDatabase:
+          name: flowx-db
+          property: connectionString
+      - key: JWT_SECRET
+        scope: runtime
+        generateValue: true
+      - key: FRONTEND_URL
+        scope: runtime
+        value: https://flowx-traffic.onrender.com
+      - key: GOOGLE_CLIENT_ID
+        scope: runtime
+      - key: GOOGLE_CLIENT_SECRET
+        scope: runtime
+      - key: GOOGLE_CALLBACK_URL
+        scope: runtime
+        value: https://flowx-traffic.onrender.com/api/auth/google/callback
+      - key: APPLE_CLIENT_ID
+        scope: runtime
+      - key: APPLE_TEAM_ID
+        scope: runtime
+      - key: APPLE_KEY_ID
+        scope: runtime
+      - key: APPLE_PRIVATE_KEY
+        scope: runtime
+      - key: APPLE_CALLBACK_URL
+        scope: runtime
+        value: https://flowx-traffic.onrender.com/api/auth/apple/callback
+    healthCheckPath: /health
+    preDeployCommand: npx prisma db push --skip-generate
+    maxInstances: 1
+    minInstances: 1
+    memoryMB: 512
+    disk:
+      name: flowx-data
+      mountPath: /var/data
+      sizeGB: 1

@@ -8,12 +8,15 @@ const router = express.Router();
 router.post('/signup', authRateLimit, authController.signup);
 router.post('/login', authRateLimit, authController.login);
 router.get('/me', authenticate, authController.getMe);
+router.patch('/me', authenticate, authController.updateMe);
 router.post('/logout', authenticate, authController.logout);
 
 // OAuth routes
 router.get('/google/initiate', authController.initiateGoogleAuth);
+router.get('/google/callback', authController.googleCallback);
 router.post('/google/callback', authController.googleCallback);
 router.get('/apple/initiate', authController.initiateAppleAuth);
+router.get('/apple/callback', authController.appleCallback);
 router.post('/apple/callback', authController.appleCallback);
 
 module.exports = router;

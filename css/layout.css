@@ -272,6 +272,7 @@
 }
 
 .topbar__user {
+  position: relative;
   display: flex;
   align-items: center;
   gap: var(--space-sm);
@@ -279,7 +280,52 @@
   background: var(--color-surface-elevated);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-full);
-  cursor: default;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.topbar__user:hover,
+.topbar__user:focus-visible {
+  border-color: var(--color-border-light);
+  box-shadow: 0 0 0 3px rgba(0, 200, 255, 0.08);
+}
+
+.topbar__user-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  display: none;
+  min-width: 180px;
+  background: rgba(9, 17, 28, 0.96);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  z-index: var(--z-dropdown);
+}
+
+.topbar__user-menu.is-open {
+  display: grid;
+}
+
+.topbar__user-menu-item {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  text-align: left;
+  padding: 12px 14px;
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.topbar__user-menu-item:hover {
+  background: rgba(0, 200, 255, 0.08);
+}
+
+.topbar__user-menu-item--danger {
+  color: var(--color-danger);
 }
 
 .topbar__avatar {

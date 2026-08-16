@@ -31,8 +31,9 @@ async function startServer() {
 
     predictionService.startPeriodicComputation(60000).catch((e)=>console.error('Prediction service failed', e));
 
-    server.listen(env.PORT, () => {
-      console.log(`FlowX Traffic backend running on http://localhost:${env.PORT}`);
+    const host = env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost';
+    server.listen(env.PORT, host, () => {
+      console.log(`FlowX Traffic backend running on port ${env.PORT}`);
     });
 
     const shutdown = async (signal) => {
