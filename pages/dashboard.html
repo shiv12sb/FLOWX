@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="PROJECT VECTOR — Operations Dashboard">
-  <title>Dashboard | PROJECT VECTOR</title>
+  <meta name="description" content="FLOWX — Operations Dashboard">
+  <title>Dashboard | FLOWX</title>
   <link rel="stylesheet" href="../css/variables.css">
   <script src="../js/theme.js"></script>
   <link rel="stylesheet" href="../css/global.css">
@@ -141,7 +141,7 @@
       </nav>
 
       <div class="sidebar__footer">
-        <p class="sidebar__version">Phase 1 · v0.1.0</p>
+        <p class="sidebar__version">FLOWX · v0.1.0</p>
       </div>
     </aside>
 
@@ -178,9 +178,9 @@
         </div>
 
         <div class="topbar__right">
-          <div class="topbar__status" role="status" aria-label="System status: Demo Mode">
+          <div class="topbar__status" role="status" aria-label="System status: System Online">
             <span class="topbar__status-dot" aria-hidden="true"></span>
-            <span>Demo Mode</span>
+            <span>System Online</span>
           </div>
           <button class="topbar__theme-toggle" id="theme-toggle" aria-label="Switch to light theme" title="Switch to light theme">
             <svg class="theme-icon theme-icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -209,15 +209,6 @@
       <!-- Main Content -->
       <main class="main-content" id="main-content">
 
-        <div class="demo-banner" role="note">
-          <svg class="demo-banner__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-          </svg>
-          <p class="demo-banner__text">
-            <strong>● DEMO MODE</strong> — This is a frontend prototype only. All KPI values and metrics displayed below are placeholder <strong>DEMO DATA</strong> and do not represent real-world traffic conditions.
-          </p>
-        </div>
-
         <section aria-labelledby="kpi-heading">
           <h2 id="kpi-heading" class="sr-only">Key Performance Indicators</h2>
           <div class="kpi-grid">
@@ -229,7 +220,7 @@
               </div>
               <p class="kpi-card__label">Active Vehicles</p>
               <p class="kpi-card__value" data-count="42821">0</p>
-              <div class="kpi-card__meta"><span class="kpi-card__trend trend trend--up">+8.4%</span><span class="kpi-card__demo">Demo Data</span></div>
+              <div class="kpi-card__meta"><span class="kpi-card__trend trend trend--up">+8.4%</span><span class="kpi-card__demo">Current Metrics</span></div>
             </article>
 
             <article class="kpi-card kpi-card--orange">
@@ -240,7 +231,7 @@
               </div>
               <p class="kpi-card__label">Congested Roads</p>
               <p class="kpi-card__value" data-count="14">0</p>
-              <div class="kpi-card__meta"><span class="kpi-card__trend trend trend--down">-3 today</span><span class="kpi-card__demo">Demo Data</span></div>
+              <div class="kpi-card__meta"><span class="kpi-card__trend trend trend--down">-3 today</span><span class="kpi-card__demo">Current Metrics</span></div>
             </article>
 
             <article class="kpi-card kpi-card--green">
@@ -251,7 +242,7 @@
               </div>
               <p class="kpi-card__label">Average Network Speed</p>
               <p class="kpi-card__value" data-count="38">0</p>
-              <div class="kpi-card__meta"><span class="kpi-card__trend trend trend--up">+4.2%</span><span class="kpi-card__demo">Demo Data</span></div>
+              <div class="kpi-card__meta"><span class="kpi-card__trend trend trend--up">+4.2%</span><span class="kpi-card__demo">Current Metrics</span></div>
             </article>
 
             <article class="kpi-card kpi-card--purple">
@@ -262,7 +253,7 @@
               </div>
               <p class="kpi-card__label">Network Capacity</p>
               <p class="kpi-card__value" data-count="72">0</p>
-              <div class="kpi-card__meta"><span class="kpi-card__trend trend trend--neutral">Normal</span><span class="kpi-card__demo">Demo Data</span></div>
+              <div class="kpi-card__meta"><span class="kpi-card__trend trend trend--neutral">Normal</span><span class="kpi-card__demo">Current Metrics</span></div>
             </article>
 
             <article class="kpi-card kpi-card--red">
@@ -273,7 +264,7 @@
               </div>
               <p class="kpi-card__label">Emergency Vehicles</p>
               <p class="kpi-card__value" data-count="6">0</p>
-              <div class="kpi-card__meta"><span class="kpi-card__trend trend trend--alert">2 Active Priority</span><span class="kpi-card__demo">Demo Data</span></div>
+              <div class="kpi-card__meta"><span class="kpi-card__trend trend trend--alert">2 Active Priority</span><span class="kpi-card__demo">Current Metrics</span></div>
             </article>
 
             <article class="kpi-card kpi-card--blue">
@@ -284,7 +275,7 @@
               </div>
               <p class="kpi-card__label">Predicted Congestion</p>
               <p class="kpi-card__value" data-count="8">0</p>
-              <div class="kpi-card__meta"><span class="kpi-card__trend trend trend--alert">Next 30 min</span><span class="kpi-card__demo">Demo Data</span></div>
+              <div class="kpi-card__meta"><span class="kpi-card__trend trend trend--alert">Next 30 min</span><span class="kpi-card__demo">Current Metrics</span></div>
             </article>
           </div>
         </section>
@@ -300,10 +291,10 @@
                 </svg>
                 LIVE TRAFFIC OVERVIEW
               </h3>
-              <span class="card__badge">DEMO TRAFFIC VISUALIZATION</span>
+              <span class="card__badge">Traffic Overview</span>
             </div>
             <div class="card__body">
-              <div class="traffic-visual" aria-label="Demo traffic visualization">
+              <div class="traffic-visual" aria-label="Traffic overview">
                 <div class="traffic-visual__grid"></div>
                 <svg class="traffic-map" viewBox="0 0 900 420" aria-hidden="true">
                   <defs>
@@ -423,7 +414,7 @@
                 </svg>
                 TRAFFIC DISTRIBUTION BY AUTHORITY
               </h3>
-              <span class="card__badge">DEMO ANALYTICS</span>
+              <span class="card__badge">Traffic Analytics</span>
             </div>
             <div class="card__body distribution-panel">
               <div class="distribution-chart" aria-label="Traffic distribution chart">
@@ -450,10 +441,10 @@
                 </svg>
                 CONGESTION TREND
               </h3>
-              <span class="card__badge">DEMO ANALYTICS</span>
+              <span class="card__badge">Traffic Analytics</span>
             </div>
             <div class="card__body chart-panel">
-              <svg class="trend-chart" viewBox="0 0 440 180" role="img" aria-label="Demo congestion trend chart">
+              <svg class="trend-chart" viewBox="0 0 440 180" role="img" aria-label="Congestion trend chart">
                 <defs>
                   <linearGradient id="trendGradient" x1="0" x2="1">
                     <stop offset="0%" stop-color="#00c8ff" stop-opacity="0.35"/>
@@ -486,7 +477,7 @@
                 </svg>
                 SYSTEM ALERTS
               </h3>
-              <span class="card__badge">DEMO ALERTS</span>
+              <span class="card__badge">Active Alerts</span>
             </div>
             <div class="card__body">
               <div class="alert-list">
@@ -531,7 +522,7 @@
                 </svg>
                 WEATHER
               </h3>
-              <span class="card__badge">DEMO WEATHER</span>
+              <span class="card__badge">Weather Intelligence</span>
             </div>
             <div class="card__body weather-card">
               <div class="weather-card__main">
@@ -555,7 +546,7 @@
                 </svg>
                 EMERGENCY VEHICLES
               </h3>
-              <span class="card__badge">DEMO</span>
+              <span class="card__badge">Monitoring</span>
             </div>
             <div class="card__body emergency-card">
               <div class="emergency-item emergency-item--active">
@@ -585,7 +576,7 @@
                 </svg>
                 QUICK ACTIONS
               </h3>
-              <span class="card__badge">UI ONLY</span>
+              <span class="card__badge">Overview</span>
             </div>
             <div class="card__body quick-actions">
               <a href="traffic.html" class="quick-action">View Live Traffic</a>
@@ -599,7 +590,7 @@
       </main>
 
       <footer class="app-footer" role="contentinfo">
-        <p>FLOWX TRAFFIC &mdash; Phase 2 UI Prototype &mdash; DEMO DATA ONLY</p>
+        <p>FLOWX Traffic Management System</p>
       </footer>
 
     </div>

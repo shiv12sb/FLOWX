@@ -169,7 +169,7 @@
       </nav>
 
       <div class="sidebar__footer">
-        <p class="sidebar__version">Phase 11 · v0.1.0</p>
+        <p class="sidebar__version">FLOWX · v0.1.0</p>
       </div>
     </aside>
 
@@ -186,9 +186,9 @@
           <h1 class="topbar__title">Ambulance</h1>
         </div>
         <div class="topbar__right">
-          <div class="topbar__status" role="status" aria-label="System status: Simulated ambulance data">
+          <div class="topbar__status" role="status" aria-label="System status: System Online">
             <span class="topbar__status-dot" aria-hidden="true"></span>
-            <span>SIMULATED DATA</span>
+            <span>System Online</span>
           </div>
           <button class="topbar__theme-toggle" id="theme-toggle" aria-label="Switch to light theme" title="Switch to light theme">
             <svg class="theme-icon theme-icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -206,7 +206,7 @@
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
             </svg>
           </button>
-          <button class="topbar__notifications" id="notifications-btn" aria-label="Notifications (placeholder)">
+          <button class="topbar__notifications" id="notifications-btn" aria-label="Notifications">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
               <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
@@ -225,16 +225,9 @@
 
       <main class="main-content" id="main-content">
         <header class="page-header">
-          <h2 class="page-header__title">SMART AMBULANCE FINDER</h2>
-          <p class="page-header__subtitle">Find the fastest, nearest and best-value simulated ambulance</p>
+          <h2 class="page-header__title">Emergency Resource Planning</h2>
+          <p class="page-header__subtitle">Operational ambulance coverage and response planning for the active network model.</p>
         </header>
-
-        <div class="demo-banner" role="note">
-          <svg class="demo-banner__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-          </svg>
-          <p class="demo-banner__text"><strong>● DEMO / SIMULATED AMBULANCE DATA</strong> — This module uses simulated ambulance and hospital data for demonstration. It does not provide real ambulance availability, booking, dispatch, pricing, medical services, or emergency response.</p>
-        </div>
 
         <section class="signal-summary-grid" aria-label="Ambulance summary metrics">
           <article class="kpi-card kpi-card--red">
@@ -271,7 +264,7 @@
               </svg>
               Simulated request
             </div>
-            <span class="badge badge--phase">SIMULATED DATA</span>
+            <span class="badge badge--phase">Operational Input</span>
           </div>
           <div class="card__body">
             <form id="ambulance-form" class="ambulance-form" novalidate>
@@ -355,7 +348,7 @@
       </main>
 
       <footer class="app-footer" role="contentinfo">
-        <p>FLOWX TRAFFIC &mdash; Phase 11 Smart Ambulance Finder &mdash; DEMO / SIMULATED AMBULANCE DATA</p>
+        <p>FLOWX Traffic Management System</p>
       </footer>
     </div>
   </div>

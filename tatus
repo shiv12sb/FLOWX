@@ -1,0 +1,13 @@
+ pages/alerts.html         | 39 [32m+++++++++++++++[m[31m---------------------[m
+ pages/ambulance.html      | 23 [32m++++++++[m[31m-------------[m
+ pages/analytics.html      | 21 [32m+++++++[m[31m------------[m
+ pages/authorities.html    | 19 [32m++++++[m[31m------------[m
+ pages/command-center.html |  4 [32m++[m[31m--[m
+ pages/dashboard.html      | 51 [32m+++++++++++++++++++[m[31m----------------------------[m
+ pages/emergency.html      | 25 [32m+++++++++[m[31m--------------[m
+ pages/routing.html        | 27 [32m++++++++++[m[31m---------------[m
+ pages/settings.html       |  6 [32m+++[m[31m---[m
+ pages/signals.html        | 23 [32m++++++++[m[31m-------------[m
+ pages/traffic.html        | 23 [32m++++++++[m[31m-------------[m
+ pages/weather.html        | 27 [32m++++++++++[m[31m---------------[m
+ 12 files changed, 108 insertions(+), 180 deletions(-)
