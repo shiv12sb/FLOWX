@@ -42,10 +42,3 @@ services:
         value: https://flowx-traffic.onrender.com/api/auth/apple/callback
     healthCheckPath: /health
     preDeployCommand: npx prisma db push --skip-generate
-    maxInstances: 1
-    minInstances: 1
-    memoryMB: 512
-    disk:
-      name: flowx-data
-      mountPath: /var/data
-      sizeGB: 1
