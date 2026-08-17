@@ -1,5 +1,5 @@
 (function () {
-  const API_BASE_URL = window.FLOWX_CONFIG?.API_BASE_URL || 'http://localhost:4000/api';
+  const API_BASE_URL = window.FLOWX_CONFIG?.API_BASE_URL || 'https://flowx-traffic.onrender.com/api';
   let oauthPopup = null;
 
   function setMessage(message, type = 'info') {
