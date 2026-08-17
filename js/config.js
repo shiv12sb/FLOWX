@@ -13,11 +13,11 @@
   ) {
     apiBaseUrl = 'http://localhost:4000/api';
   } else {
-    // Production - Render backend
+    // Production frontend → Render backend
     apiBaseUrl = 'https://flowx-traffic.onrender.com/api';
   }
 
-  // Optional override through meta tag
+  // Optional meta tag override
   const metaTag = document.querySelector('meta[name="flowx-api-url"]');
 
   if (metaTag && metaTag.content) {
@@ -28,7 +28,6 @@
 
   window.FLOWX_CONFIG = {
     API_BASE_URL: apiBaseUrl,
-
     isDevelopment:
       window.location.hostname === 'localhost' ||
       window.location.hostname === '127.0.0.1'
