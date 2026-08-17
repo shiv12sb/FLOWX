@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +14,7 @@
   <link rel="stylesheet" href="../css/responsive.css">
   <link rel="stylesheet" href="../css/animations.css">
 </head>
+
 <body>
   <div class="app-layout">
     <div class="sidebar-overlay" id="sidebar-overlay" aria-hidden="true"></div>
@@ -21,10 +23,12 @@
         <a href="dashboard.html" class="sidebar__brand-link">
           <div class="sidebar__logo" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M4 14.5H9.2L11.6 11L14.5 16.5H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M16 8.5L20 6.5V12.5L16 8.5Z" fill="currentColor"/>
-              <path d="M6 18.5L9 15.5M9 15.5L6 12.5M9 15.5H4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="12" cy="9" r="2" fill="currentColor"/>
+              <path d="M4 14.5H9.2L11.6 11L14.5 16.5H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                stroke-linejoin="round" />
+              <path d="M16 8.5L20 6.5V12.5L16 8.5Z" fill="currentColor" />
+              <path d="M6 18.5L9 15.5M9 15.5L6 12.5M9 15.5H4" stroke="currentColor" stroke-width="1.6"
+                stroke-linecap="round" stroke-linejoin="round" />
+              <circle cx="12" cy="9" r="2" fill="currentColor" />
             </svg>
           </div>
           <div class="sidebar__brand-text">
@@ -61,15 +65,20 @@
     <div class="main-wrapper">
       <header class="topbar" role="banner">
         <div class="topbar__left">
-          <button class="topbar__menu-btn" id="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="sidebar">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+          <button class="topbar__menu-btn" id="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false"
+            aria-controls="sidebar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true">
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
             </svg>
           </button>
           <h1 class="topbar__title">Profile</h1>
         </div>
         <div class="topbar__right">
-          <div class="topbar__status" role="status"><span class="topbar__status-dot" aria-hidden="true"></span><span>Authenticated</span></div>
+          <div class="topbar__status" role="status"><span class="topbar__status-dot"
+              aria-hidden="true"></span><span>Authenticated</span></div>
           <button class="topbar__theme-toggle" id="theme-toggle" aria-label="Theme toggle">
             <svg class="theme-icon theme-icon--sun" ...></svg>
             <svg class="theme-icon theme-icon--moon" ...></svg>
@@ -144,21 +153,79 @@
   </div>
 
   <style>
-    .profile-shell { max-width: 980px; margin: 0 auto; }
-    .profile-card { margin-top: 24px; }
-    .profile-body { display: grid; gap: 24px; }
-    .profile-summary { display: flex; align-items: center; gap: 18px; padding-bottom: 16px; border-bottom: 1px solid var(--color-border); }
-    .profile-avatar { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--color-secondary), var(--color-primary)); color: var(--color-bg); font-weight: var(--font-bold); }
-    .profile-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
-    .field-group { display: grid; gap: 8px; }
-    .field-group label { color: var(--color-text-muted); font-size: var(--text-sm); }
-    .field-group input { width: 100%; border: 1px solid var(--color-border); background: rgba(8,15,24,0.82); border-radius: 12px; padding: 12px 14px; color: var(--color-text); }
-    .field-group input[readonly] { opacity: 0.9; }
-    .profile-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .profile-shell {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .profile-card {
+      margin-top: 24px;
+    }
+
+    .profile-body {
+      display: grid;
+      gap: 24px;
+    }
+
+    .profile-summary {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .profile-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--color-secondary), var(--color-primary));
+      color: var(--color-bg);
+      font-weight: var(--font-bold);
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .field-group {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field-group label {
+      color: var(--color-text-muted);
+      font-size: var(--text-sm);
+    }
+
+    .field-group input {
+      width: 100%;
+      border: 1px solid var(--color-border);
+      background: rgba(8, 15, 24, 0.82);
+      border-radius: 12px;
+      padding: 12px 14px;
+      color: var(--color-text);
+    }
+
+    .field-group input[readonly] {
+      opacity: 0.9;
+    }
+
+    .profile-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
   </style>
 
   <script src="../js/utils.js"></script>
   <script src="../js/navigation.js"></script>
+  <script src="../js/config.js"></script>
   <script src="../js/config.js"></script>
   <script src="../js/auth.js"></script>
   <script src="../js/app.js"></script>
@@ -219,4 +286,5 @@
     });
   </script>
 </body>
+
 </html>
