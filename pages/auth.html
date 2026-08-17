@@ -151,30 +151,27 @@
       </div>
     </section>
   </div>
+ <script src="../js/config.js"></script>
+<script src="../js/auth.js"></script>
+  const tabs = document.querySelectorAll('.auth-tab');
+  const forms = document.querySelectorAll('.auth-form');
 
-  <script src="../js/config.js"></script>
-  <script src="../js/config.js"></script>
-  <script src="../js/auth.js"></script>
-  <script>
-    const tabs = document.querySelectorAll('.auth-tab');
-    const forms = document.querySelectorAll('.auth-form');
+  tabs.forEach((tab) => {
+  tab.addEventListener('click', () => {
+  const target = tab.dataset.authTab;
 
-    tabs.forEach((tab) => {
-      tab.addEventListener('click', () => {
-        const target = tab.dataset.authTab;
+  tabs.forEach((btn) => btn.classList.toggle('is-active', btn === tab));
+  forms.forEach((form) => {
+  form.classList.toggle('is-visible', form.dataset.authForm === target);
+  });
+  });
+  });
 
-        tabs.forEach((btn) => btn.classList.toggle('is-active', btn === tab));
-        forms.forEach((form) => {
-          form.classList.toggle('is-visible', form.dataset.authForm === target);
-        });
-      });
-    });
-
-    document.addEventListener('DOMContentLoaded', () => {
-      if (window.STCAuth) {
-        window.STCAuth.init();
-      }
-    });
+  document.addEventListener('DOMContentLoaded', () => {
+  if (window.STCAuth) {
+  window.STCAuth.init();
+  }
+  });
   </script>
 </body>
 
