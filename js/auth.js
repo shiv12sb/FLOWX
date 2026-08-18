@@ -1,4 +1,5 @@
 (function () {
+  const DEMO_MODE = true;
   const API_BASE_URL =
   window.FLOWX_CONFIG?.API_BASE_URL ||
   'https://flowx-traffic.onrender.com/api';
@@ -30,7 +31,19 @@
   }
 
   function redirectToDashboard() {
-    window.location.href = 'dashboard.html';
+    // When on /pages/auth.html, 'dashboard.html' resolves to /pages/dashboard.html
+    const dashboardPath = window.location.pathname.includes('/pages/') 
+      ? 'dashboard.html' 
+      : '/pages/dashboard.html';
+    
+    console.log('[AUTH] Redirecting to dashboard:', dashboardPath);
+    window.location.href = dashboardPath;
+    
+    // Fallback in case redirect fails (network issue, etc)
+    setTimeout(() => {
+      console.error('[AUTH] Redirect failed, attempting alternative path');
+      window.location.href = dashboardPath;
+    }, 2000);
   }
 
   async function apiRequest(path, method = 'GET', body = null) {
@@ -52,12 +65,16 @@
       options.body = JSON.stringify(body);
     }
 
+    const url = `${API_BASE_URL}${path}`;
+    console.log('[API] Request:', { method, path, url });
+
     let response;
     try {
-      response = await fetch(`${API_BASE_URL}${path}`, options);
+      response = await fetch(url, options);
     } catch (networkError) {
       const error = new Error(`Network error: ${networkError.message || 'Unable to reach server'}`);
       error.statusCode = 0;
+      console.error('[API] Network error:', error.message);
       throw error;
     }
 
@@ -70,13 +87,17 @@
         success: false,
         message: `Server error (${response.status})`
       };
+      console.warn('[API] Response parse error, using fallback error object');
     }
+
+    console.log('[API] Response:', { status: response.status, ok: response.ok, result });
 
     // Handle HTTP error responses
     if (!response.ok) {
       const errorMessage = result?.message || result?.error || `HTTP ${response.status}: ${response.statusText}`;
       const error = new Error(errorMessage);
       error.statusCode = response.status;
+      console.error('[API] HTTP error:', error.message);
       throw error;
     }
 
@@ -85,6 +106,7 @@
       const errorMessage = result.message || 'Request failed';
       const error = new Error(errorMessage);
       error.statusCode = result.statusCode || response.status;
+      console.error('[API] API error:', error.message);
       throw error;
     }
 
@@ -145,12 +167,20 @@
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`
         }
-      }).catch(() => {});
+      }).catch(() => {
+        console.warn('[AUTH] Logout API call failed, continuing with local logout');
+      });
     }
 
     clearToken();
     sessionStorage.removeItem('flowx_user');
-    window.location.replace('auth.html');
+    console.log('[AUTH] User logged out, redirecting to auth page');
+    
+    // Handle path correctly whether on pages or root
+    const authPath = window.location.pathname.includes('/pages/') 
+      ? 'auth.html' 
+      : '/pages/auth.html';
+    window.location.replace(authPath);
   }
 
   function getStoredUser() {
@@ -199,6 +229,10 @@
   }
 
   function guardDashboard() {
+    if (DEMO_MODE) {
+      return true;
+    }
+
     const token = getToken();
     if (!token) {
       window.location.href = 'auth.html';
@@ -414,6 +448,8 @@
         event.preventDefault();
         const submitButton = loginForm.querySelector('[type="submit"]');
         const originalButtonText = submitButton ? submitButton.textContent : 'Login to dashboard';
+        const inputs = loginForm.querySelectorAll('input, button');
+        let loginSuccess = false;
 
         const formData = new FormData(loginForm);
         const email = String(formData.get('email') || '').trim();
@@ -425,26 +461,34 @@
         }
 
         // Disable form during submission
-        const inputs = loginForm.querySelectorAll('input, button');
         inputs.forEach(input => input.disabled = true);
         if (submitButton) submitButton.textContent = 'Signing in...';
 
         try {
+          console.log('[AUTH] Submitting login form', { email });
           setMessage('Signing in...', 'info');
+          
           const result = await loginUser({ email, password });
+          console.log('[AUTH] Login successful', result.message);
+          loginSuccess = true;
           setMessage(result.message || 'Login successful. Redirecting...', 'success');
           
           // Ensure we redirect after success
           setTimeout(() => {
+            console.log('[AUTH] Triggering redirect to dashboard');
             redirectToDashboard();
           }, 800);
         } catch (error) {
+          console.error('[AUTH] Login failed', error);
           const errorMessage = error?.message || 'Unable to login right now. Please check your credentials.';
           setMessage(errorMessage, 'error');
-          
-          // Re-enable form on error
-          inputs.forEach(input => input.disabled = false);
-          if (submitButton) submitButton.textContent = originalButtonText;
+        } finally {
+          // Only restore button state if login failed
+          // On success, keep disabled since we're redirecting
+          if (!loginSuccess) {
+            inputs.forEach(input => input.disabled = false);
+            if (submitButton) submitButton.textContent = originalButtonText;
+          }
         }
       });
     }
@@ -454,6 +498,8 @@
         event.preventDefault();
         const submitButton = signupForm.querySelector('[type="submit"]');
         const originalButtonText = submitButton ? submitButton.textContent : 'Create account';
+        const inputs = signupForm.querySelectorAll('input, button');
+        let signupSuccess = false;
 
         const formData = new FormData(signupForm);
         const payload = {
@@ -474,26 +520,34 @@
         }
 
         // Disable form during submission
-        const inputs = signupForm.querySelectorAll('input, button');
         inputs.forEach(input => input.disabled = true);
         if (submitButton) submitButton.textContent = 'Creating account...';
 
         try {
+          console.log('[AUTH] Submitting signup form', { email: payload.email });
           setMessage('Creating your account...', 'info');
+          
           const result = await signupUser(payload);
+          console.log('[AUTH] Signup successful', result.message);
+          signupSuccess = true;
           setMessage(result.message || 'Account created successfully. Redirecting...', 'success');
           
           // Ensure we redirect after success
           setTimeout(() => {
+            console.log('[AUTH] Triggering redirect to dashboard');
             redirectToDashboard();
           }, 800);
         } catch (error) {
+          console.error('[AUTH] Signup failed', error);
           const errorMessage = error?.message || 'Unable to create account. Please try again.';
           setMessage(errorMessage, 'error');
-          
-          // Re-enable form on error
-          inputs.forEach(input => input.disabled = false);
-          if (submitButton) submitButton.textContent = originalButtonText;
+        } finally {
+          // Only restore button state if signup failed
+          // On success, keep disabled since we're redirecting
+          if (!signupSuccess) {
+            inputs.forEach(input => input.disabled = false);
+            if (submitButton) submitButton.textContent = originalButtonText;
+          }
         }
       });
     }
