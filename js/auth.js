@@ -52,12 +52,40 @@
       options.body = JSON.stringify(body);
     }
 
-    const response = await fetch(`${API_BASE_URL}${path}`, options);
-    const result = await response.json().catch(() => ({ success: false, message: 'Request failed.' }));
+    let response;
+    try {
+      response = await fetch(`${API_BASE_URL}${path}`, options);
+    } catch (networkError) {
+      const error = new Error(`Network error: ${networkError.message || 'Unable to reach server'}`);
+      error.statusCode = 0;
+      throw error;
+    }
 
-    if (!response.ok || result.success === false) {
-      const message = result.message || 'Something went wrong.';
-      throw new Error(message);
+    let result = {};
+    try {
+      result = await response.json();
+    } catch (parseError) {
+      // If response is not JSON, create a generic error object
+      result = {
+        success: false,
+        message: `Server error (${response.status})`
+      };
+    }
+
+    // Handle HTTP error responses
+    if (!response.ok) {
+      const errorMessage = result?.message || result?.error || `HTTP ${response.status}: ${response.statusText}`;
+      const error = new Error(errorMessage);
+      error.statusCode = response.status;
+      throw error;
+    }
+
+    // Handle API-level errors (success: false)
+    if (result.success === false) {
+      const errorMessage = result.message || 'Request failed';
+      const error = new Error(errorMessage);
+      error.statusCode = result.statusCode || response.status;
+      throw error;
     }
 
     return result;
@@ -384,6 +412,9 @@
     if (loginForm) {
       loginForm.addEventListener('submit', async (event) => {
         event.preventDefault();
+        const submitButton = loginForm.querySelector('[type="submit"]');
+        const originalButtonText = submitButton ? submitButton.textContent : 'Login to dashboard';
+
         const formData = new FormData(loginForm);
         const email = String(formData.get('email') || '').trim();
         const password = String(formData.get('password') || '');
@@ -393,13 +424,27 @@
           return;
         }
 
+        // Disable form during submission
+        const inputs = loginForm.querySelectorAll('input, button');
+        inputs.forEach(input => input.disabled = true);
+        if (submitButton) submitButton.textContent = 'Signing in...';
+
         try {
           setMessage('Signing in...', 'info');
           const result = await loginUser({ email, password });
-          setMessage(result.message || 'Login successful.', 'success');
-          setTimeout(() => redirectToDashboard(), 600);
+          setMessage(result.message || 'Login successful. Redirecting...', 'success');
+          
+          // Ensure we redirect after success
+          setTimeout(() => {
+            redirectToDashboard();
+          }, 800);
         } catch (error) {
-          setMessage(error.message || 'Unable to login right now.', 'error');
+          const errorMessage = error?.message || 'Unable to login right now. Please check your credentials.';
+          setMessage(errorMessage, 'error');
+          
+          // Re-enable form on error
+          inputs.forEach(input => input.disabled = false);
+          if (submitButton) submitButton.textContent = originalButtonText;
         }
       });
     }
@@ -407,6 +452,9 @@
     if (signupForm) {
       signupForm.addEventListener('submit', async (event) => {
         event.preventDefault();
+        const submitButton = signupForm.querySelector('[type="submit"]');
+        const originalButtonText = submitButton ? submitButton.textContent : 'Create account';
+
         const formData = new FormData(signupForm);
         const payload = {
           name: String(formData.get('name') || '').trim(),
@@ -420,13 +468,32 @@
           return;
         }
 
+        if (payload.password.length < 8) {
+          setMessage('Password must be at least 8 characters long.', 'error');
+          return;
+        }
+
+        // Disable form during submission
+        const inputs = signupForm.querySelectorAll('input, button');
+        inputs.forEach(input => input.disabled = true);
+        if (submitButton) submitButton.textContent = 'Creating account...';
+
         try {
           setMessage('Creating your account...', 'info');
           const result = await signupUser(payload);
-          setMessage(result.message || 'Signup successful.', 'success');
-          setTimeout(() => redirectToDashboard(), 700);
+          setMessage(result.message || 'Account created successfully. Redirecting...', 'success');
+          
+          // Ensure we redirect after success
+          setTimeout(() => {
+            redirectToDashboard();
+          }, 800);
         } catch (error) {
-          setMessage(error.message || 'Signup failed. Please try again.', 'error');
+          const errorMessage = error?.message || 'Unable to create account. Please try again.';
+          setMessage(errorMessage, 'error');
+          
+          // Re-enable form on error
+          inputs.forEach(input => input.disabled = false);
+          if (submitButton) submitButton.textContent = originalButtonText;
         }
       });
     }
