@@ -1846,6 +1846,7 @@
 
 .auth-shell {
   width: 100%;
+  height: 100%;
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   background: rgba(13, 21, 38, 0.72);
